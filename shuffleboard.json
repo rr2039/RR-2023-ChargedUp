@@ -27,7 +27,7 @@
           "4,0": {
             "size": [
               9,
-              9
+              6
             ],
             "content": {
               "_type": "Field",
@@ -75,6 +75,45 @@
                 }
               ]
             }
+          },
+          "13,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
+              "_title": "limelight_PipelineName",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Stream",
+              "_title": "limelight_Stream",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Interface",
+              "_title": "limelight_Interface",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -94,9 +133,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1920.0,
-    "height": 778.0
+    "x": -3.200000047683716,
+    "y": 10.399999618530273,
+    "width": 893.5999755859375,
+    "height": 528.0
   }
 }

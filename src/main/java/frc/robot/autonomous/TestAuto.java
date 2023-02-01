@@ -28,7 +28,7 @@ public class TestAuto extends SequentialCommandGroup {
   public TestAuto(DriveSubsystem m_robotDrive) {
     // This will load the file "FullAuto.path" and generate it with a max velocity of 4 m/s and a max acceleration of 3 m/s^2
     // for every path in the group
-    ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("GrabCube", new PathConstraints(4, 3));
+    ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("GrabCube", new PathConstraints(1, 1), new PathConstraints(1, 1));
 
     // This is just an example event map. It would be better to have a constant, global event map
     // in your code that will be used by all path following commands.
@@ -51,16 +51,13 @@ public class TestAuto extends SequentialCommandGroup {
     );
 
     //Command fullAuto = autoBuilder.fullAuto(pathGroup);
+    Command poseReset = autoBuilder.resetPose(pathGroup.get(0));
     Command path1 = autoBuilder.followPathWithEvents(pathGroup.get(0));
-    m_robotDrive.setFieldTrajectory(pathGroup.get(0));
+    //m_robotDrive.setFieldTrajectory(pathGroup.get(0));
     Command path2 = autoBuilder.followPathWithEvents(pathGroup.get(1));
-
-    //m_robotDrive.resetOdometry(pathGroup.get(0).getInitialPose());
-
-    //return fullAuto;
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(path1, new WaitCommand(2), path2);
+    addCommands(poseReset, path1, new WaitCommand(2), path2);
   }
 }
