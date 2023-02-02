@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -29,13 +30,20 @@ public class LimelightInterface extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     hasTarget = n_limelight.getEntry("tv").getDouble(0) == 0 ? false : true;
+    //System.out.println(hasTarget);
     if (hasTarget) {
       aprilTagId = n_limelight.getEntry("tid").getDouble(0);
-      double[] botposeDouble = n_limelight.getEntry("botpose").getDoubleArray(new double[]{0.0,0.0,0.0,0.0,0.0,0.0});
-      Pose2d botpose = new Pose2d(botposeDouble[0], botposeDouble[1], new Rotation2d(botposeDouble[5]));
-      m_robotDrive.feedVisionToPose(botpose);
-      double[] targetPoseDouble = n_limelight.getEntry("botpose_targetspace").getDoubleArray(new double[]{0.0,0.0,0.0,0.0,0.0,0.0});
-      aprilTagPosRelRobot = new Pose2d(targetPoseDouble[0], targetPoseDouble[1], new Rotation2d(targetPoseDouble[5]));
+      double[] targetPoseDouble = n_limelight.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
+      if (targetPoseDouble.length > 0) {
+        aprilTagPosRelRobot = new Pose2d(targetPoseDouble[0], targetPoseDouble[1], new Rotation2d(targetPoseDouble[5]));
+        if ((aprilTagPosRelRobot.getX() < 1 && aprilTagPosRelRobot.getX() > -1) || (aprilTagPosRelRobot.getY() < 1 && aprilTagPosRelRobot.getY() > -1)) {
+          double[] botposeDouble = n_limelight.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+          if (botposeDouble.length > 0) {
+            Pose2d botpose = new Pose2d(botposeDouble[0], botposeDouble[1], new Rotation2d(Math.toRadians(botposeDouble[5])));
+            m_robotDrive.feedVisionToPose(botpose);
+          }
+        }
+      }
     }
   }
 

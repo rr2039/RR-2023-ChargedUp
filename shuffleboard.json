@@ -114,6 +114,21 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "19,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/hasTarget",
+              "_title": "hasTarget",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -135,7 +150,7 @@
   "windowGeometry": {
     "x": -3.200000047683716,
     "y": 10.399999618530273,
-    "width": 893.5999755859375,
+    "width": 889.5999755859375,
     "height": 528.0
   }
 }
