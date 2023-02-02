@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.autonomous.DefaultAuto;
 import frc.robot.autonomous.TestAuto;
+import frc.robot.commands.AlignToAprilTag;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utilities.LimelightInterface;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final LimelightInterface m_limelight = new LimelightInterface(m_robotDrive);
 
   // The driver's controller
   //XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -73,6 +76,8 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+    new JoystickButton(m_driverController, 2)
+        .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight));
   }
 
   /**
