@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
@@ -31,8 +32,8 @@ public class RobotContainer {
   private final LimelightInterface m_limelight = new LimelightInterface(m_robotDrive);
 
   // The driver's controller
-  //XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
+  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  //GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
 
   // Auto Chooser for Dashboard
   SendableChooser<Command> auto_chooser = new SendableChooser<>();
@@ -52,7 +53,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 MathUtil.applyDeadband(m_driverController.getRawAxis(0), 0.06),
                 MathUtil.applyDeadband(-m_driverController.getRawAxis(1), 0.06),
-                MathUtil.applyDeadband(-m_driverController.getRawAxis(2), 0.06),
+                MathUtil.applyDeadband(-m_driverController.getRawAxis(4), 0.06),
                 true),
             m_robotDrive));
 
@@ -72,12 +73,14 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, 1)
+    new JoystickButton(m_driverController, Button.kA.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-    new JoystickButton(m_driverController, 2)
-        .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight));
+    new JoystickButton(m_driverController, Button.kY.value)
+        .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight));//.andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
+    new JoystickButton(m_driverController, Button.kB.value)
+        .onTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
   }
 
   /**

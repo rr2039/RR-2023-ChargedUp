@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -97,6 +98,7 @@ public class DriveSubsystem extends SubsystemBase {
     // If limelight has april tag in view, add to pose estimate
     m_field.setRobotPose(this.getPose());
     SmartDashboard.putData("Field", m_field);
+    SmartDashboard.putString("RobotPos", this.getPose().toString());
   }
 
   public void feedVisionToPose(Pose2d visionPose) {

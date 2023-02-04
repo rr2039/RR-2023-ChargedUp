@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class LimelightInterface extends SubsystemBase {
@@ -34,20 +35,24 @@ public class LimelightInterface extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     hasTarget = n_limelight.getEntry("tv").getDouble(0) == 0 ? false : true;
+		SmartDashboard.putBoolean("HasTarget", hasTarget);
     //System.out.println(hasTarget);
     if (hasTarget) {
       aprilTagId = n_limelight.getEntry("tid").getDouble(0);
 			SmartDashboard.putNumber("AprilTagID", aprilTagId);
       double[] targetPoseDouble = n_limelight.getEntry("targetpose_robotspace").getDoubleArray(new double[6]);
       if (targetPoseDouble.length > 0) {
-        aprilTagPosRelRobot = new Pose2d(targetPoseDouble[0], targetPoseDouble[1], new Rotation2d(targetPoseDouble[5]));
+        aprilTagPosRelRobot = new Pose2d(targetPoseDouble[2], targetPoseDouble[0], Rotation2d.fromDegrees(targetPoseDouble[4]));
         SmartDashboard.putString("AprilTagPosRelBot", aprilTagPosRelRobot.toString());
 				aprilTagField.setRobotPose(aprilTagPosRelRobot);
 				SmartDashboard.putData("AprilTagFieldPos", aprilTagField);
-        if ((aprilTagPosRelRobot.getX() < 1 && aprilTagPosRelRobot.getX() > -1) || (aprilTagPosRelRobot.getY() < 1 && aprilTagPosRelRobot.getY() > -1)) {
+        if ((aprilTagPosRelRobot.getX() < LimelightConstants.limelightDetectionDistance 
+              && aprilTagPosRelRobot.getX() > -LimelightConstants.limelightDetectionDistance) 
+              && (aprilTagPosRelRobot.getY() < LimelightConstants.limelightDetectionDistance 
+              && aprilTagPosRelRobot.getY() > -LimelightConstants.limelightDetectionDistance)) {
           double[] botposeDouble = n_limelight.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
           if (botposeDouble.length > 0) {
-            Pose2d botpose = new Pose2d(botposeDouble[0], botposeDouble[1], new Rotation2d(Math.toRadians(botposeDouble[5])));
+            Pose2d botpose = new Pose2d(botposeDouble[0], botposeDouble[1], Rotation2d.fromDegrees(botposeDouble[5]));
             SmartDashboard.putString("LLBotPose", botpose.toString());
 						llBotField.setRobotPose(botpose);
 						SmartDashboard.putData("LLBotPoseFieldPos", llBotField);
@@ -66,7 +71,7 @@ public class LimelightInterface extends SubsystemBase {
     return hasTarget;
   }
 
-  public double aprilTabId() {
+  public double aprilTagId() {
     return aprilTagId;
   }
 

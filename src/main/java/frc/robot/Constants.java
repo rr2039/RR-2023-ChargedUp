@@ -6,7 +6,11 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -26,11 +30,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Transform2d APRILTAG_CUBE_SCORE = new Transform2d(new Translation2d(0.5, 0), new Rotation2d(0));
-  
+  public static final Transform2d APRILTAG_CUBE_SCORE = new Transform2d(new Translation2d(1.25, 0), Rotation2d.fromDegrees(180));
+
+  //public static final Pose3d APRILTAG_6_POS = new Pose3d(1.02743, 4.424426, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)));
+  public static final Pose2d APRILTAG_6_POS = new Pose2d(1.02743, 4.424426, Rotation2d.fromDegrees(0));
+
   public static final class LimelightConstants {
     public static final double ledOff = 1;
     public static final double ledOn = 3;
+    public static final double limelightDetectionDistance = 3;
   }
 
   public static final class DriveConstants {
@@ -131,9 +139,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPXController = 0;
+    public static final double kPYController = 0;
+    public static final double kPThetaController = 0;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(

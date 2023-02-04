@@ -27,7 +27,7 @@
           "4,0": {
             "size": [
               9,
-              6
+              5
             ],
             "content": {
               "_type": "Field",
@@ -76,7 +76,7 @@
               ]
             }
           },
-          "13,0": {
+          "0,10": {
             "size": [
               2,
               1
@@ -89,7 +89,7 @@
               "_showGlyph": false
             }
           },
-          "15,0": {
+          "2,9": {
             "size": [
               2,
               1
@@ -102,7 +102,7 @@
               "_showGlyph": false
             }
           },
-          "17,0": {
+          "0,9": {
             "size": [
               2,
               1
@@ -115,19 +115,116 @@
               "_showGlyph": false
             }
           },
-          "19,0": {
+          "4,5": {
+            "size": [
+              9,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/RobotPos",
+              "_title": "RobotPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "22,0": {
             "size": [
               3,
               3
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/hasTarget",
-              "_title": "hasTarget",
+              "_source0": "network_table:///SmartDashboard/HasTarget",
+              "_title": "HasTarget",
               "_glyph": 148,
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "25,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AprilTagID",
+              "_title": "AprilTagID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,5": {
+            "size": [
+              9,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AprilTagPosRelBot",
+              "_title": "AprilTagPosRelBot",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              9,
+              5
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/AprilTagFieldPos",
+              "_title": "AprilTagFieldPos",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "A2022_Rapid_React",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false
+            }
+          },
+          "4,12": {
+            "size": [
+              9,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LLBotPose",
+              "_title": "LLBotPose",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,7": {
+            "size": [
+              9,
+              5
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/LLBotPoseFieldPos",
+              "_title": "LLBotPoseFieldPos",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "A2022_Rapid_React",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false
+            }
+          },
+          "13,7": {
+            "size": [
+              9,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AlignEndpoint",
+              "_title": "AlignEndpoint",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -148,9 +245,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -3.200000047683716,
-    "y": 10.399999618530273,
-    "width": 889.5999755859375,
-    "height": 528.0
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1056.0
   }
 }

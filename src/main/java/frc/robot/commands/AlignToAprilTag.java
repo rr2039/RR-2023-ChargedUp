@@ -9,11 +9,13 @@ import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
@@ -54,12 +56,22 @@ public class AlignToAprilTag extends CommandBase {
   @Override
   public void initialize() {
     // Get where april tag is
-    Pose2d aprilTagPos = limelight.getAprilTagPos();
+    //Pose2d aprilTagPos = limelight.getAprilTagPos();
     // Find where that is in relation to robots current pose
-    Pose2d endPoint = robotDrive.getPose().transformBy(new Transform2d(new Translation2d(aprilTagPos.getX(), aprilTagPos.getY()), aprilTagPos.getRotation()));
+    Pose2d endPoint;
+    double aprilTagId = limelight.aprilTagId();
+    switch((int) aprilTagId) {
+      case 6:
+        endPoint = Constants.APRILTAG_6_POS;
+        break;
+      default:
+        endPoint = Constants.APRILTAG_6_POS;
+        break;
+    }
+    //Pose2d endPoint = robotDrive.getPose().transformBy(new Transform2d(new Translation2d(aprilTagPos.getX(), aprilTagPos.getY()), aprilTagPos.getRotation()));
     // Last transform endpoint to be offset so bot doesn't try to ram through scoring
-    endPoint.transformBy(Constants.APRILTAG_CUBE_SCORE);
-
+    endPoint = endPoint.transformBy(Constants.APRILTAG_CUBE_SCORE);
+    SmartDashboard.putString("AlignEndpoint", endPoint.toString());
     // Generate trajectory for swerve to follow based on where robot is and where tag should be. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // List of start point and end point
