@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -21,6 +22,9 @@ public class LimelightInterface extends SubsystemBase {
 
   DriveSubsystem m_robotDrive;
   
+	private final Field2d aprilTagField = new Field2d();
+	private final Field2d llBotField = new Field2d();
+
   /** Creates a new LimelightInterface. */
   public LimelightInterface(DriveSubsystem robotDrive) {
     m_robotDrive = robotDrive;
@@ -33,13 +37,20 @@ public class LimelightInterface extends SubsystemBase {
     //System.out.println(hasTarget);
     if (hasTarget) {
       aprilTagId = n_limelight.getEntry("tid").getDouble(0);
-      double[] targetPoseDouble = n_limelight.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
+			SmartDashboard.putNumber("AprilTagID", aprilTagId);
+      double[] targetPoseDouble = n_limelight.getEntry("targetpose_robotspace").getDoubleArray(new double[6]);
       if (targetPoseDouble.length > 0) {
         aprilTagPosRelRobot = new Pose2d(targetPoseDouble[0], targetPoseDouble[1], new Rotation2d(targetPoseDouble[5]));
+        SmartDashboard.putString("AprilTagPosRelBot", aprilTagPosRelRobot.toString());
+				aprilTagField.setRobotPose(aprilTagPosRelRobot);
+				SmartDashboard.putData("AprilTagFieldPos", aprilTagField);
         if ((aprilTagPosRelRobot.getX() < 1 && aprilTagPosRelRobot.getX() > -1) || (aprilTagPosRelRobot.getY() < 1 && aprilTagPosRelRobot.getY() > -1)) {
           double[] botposeDouble = n_limelight.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
           if (botposeDouble.length > 0) {
             Pose2d botpose = new Pose2d(botposeDouble[0], botposeDouble[1], new Rotation2d(Math.toRadians(botposeDouble[5])));
+            SmartDashboard.putString("LLBotPose", botpose.toString());
+						llBotField.setRobotPose(botpose);
+						SmartDashboard.putData("LLBotPoseFieldPos", llBotField);
             m_robotDrive.feedVisionToPose(botpose);
           }
         }
