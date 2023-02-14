@@ -15,7 +15,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class LimelightInterface extends SubsystemBase {
-  NetworkTable n_limelight = NetworkTableInstance.getDefault().getTable("limelight");
+  //NetworkTable n_limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
   boolean hasTarget;
   double aprilTagId;
@@ -34,7 +34,7 @@ public class LimelightInterface extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    hasTarget = n_limelight.getEntry("tv").getDouble(0) == 0 ? false : true;
+    /*hasTarget = n_limelight.getEntry("tv").getDouble(0) == 0 ? false : true;
 		SmartDashboard.putBoolean("HasTarget", hasTarget);
     //System.out.println(hasTarget);
     if (hasTarget) {
@@ -60,22 +60,27 @@ public class LimelightInterface extends SubsystemBase {
           }
         }
       }
+    }*/
+
+    hasTarget = LimelightHelpers.getTV("");
+    if (hasTarget) {
+      aprilTagId = LimelightHelpers.getFiducialID("");
+      aprilTagPosRelRobot = LimelightHelpers.getTargetPose3d_RobotSpace("").toPose2d();
+      aprilTagField.setRobotPose(aprilTagPosRelRobot);
+      Pose2d botpose = LimelightHelpers.getBotPose2d_wpiBlue("");
+      llBotField.setRobotPose(botpose);
+      SmartDashboard.putNumber("AprilTagID", aprilTagId);
+      SmartDashboard.putBoolean("HasTarget", hasTarget);
+      SmartDashboard.putString("AprilTagPosRelBot", aprilTagPosRelRobot.toString());
+      SmartDashboard.putData("AprilTagFieldPos", aprilTagField);
+      SmartDashboard.putString("LLBotPose", botpose.toString());
+      SmartDashboard.putData("LLBotPoseFieldPos", llBotField);
+      if ((aprilTagPosRelRobot.getX() < LimelightConstants.limelightDetectionDistance 
+              && aprilTagPosRelRobot.getX() > -LimelightConstants.limelightDetectionDistance) 
+              && (aprilTagPosRelRobot.getY() < LimelightConstants.limelightDetectionDistance 
+              && aprilTagPosRelRobot.getY() > -LimelightConstants.limelightDetectionDistance)) {
+        m_robotDrive.feedVisionToPose(botpose);
+      }
     }
-  }
-
-  public Pose2d getAprilTagPos() {
-    return aprilTagPosRelRobot;
-  }
-
-  public boolean hasTarget() {
-    return hasTarget;
-  }
-
-  public double aprilTagId() {
-    return aprilTagId;
-  }
-
-  public void setLedStatus(double status) {
-    n_limelight.getEntry("ledMode").setNumber(status);
   }
 }

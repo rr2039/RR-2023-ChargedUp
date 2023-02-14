@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,8 +16,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +51,8 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+  //private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
   /*SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -56,17 +65,22 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });*/
 
+  private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+  private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10));
+
   // Pose estimator used in replacement of odometry
   SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
     DriveConstants.kDriveKinematics, 
-    Rotation2d.fromDegrees(m_gyro.getAngle()), 
+    Rotation2d.fromDegrees(this.getHeading()), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(),
       m_frontRight.getPosition(),
       m_rearLeft.getPosition(),
       m_rearRight.getPosition()
     }, 
-    new Pose2d());
+    new Pose2d(),
+    stateStdDevs,
+    visionMeasurementStdDevs);
 
   // Field2d for simulations
   private final Field2d m_field = new Field2d();
@@ -88,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
         });*/
     // Update the pose estimate
     m_poseEstimator.update(
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      Rotation2d.fromDegrees(this.getHeading()),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -99,6 +113,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_field.setRobotPose(this.getPose());
     SmartDashboard.putData("Field", m_field);
     SmartDashboard.putString("RobotPos", this.getPose().toString());
+    SmartDashboard.putNumber("Heading", this.getHeading());
   }
 
   public void feedVisionToPose(Pose2d visionPose) {
@@ -135,7 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);*/
     m_poseEstimator.resetPosition(
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      Rotation2d.fromDegrees(this.getHeading()),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -162,7 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_gyro.getAngle()))
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(this.getHeading()))
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -206,7 +221,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
+    //m_gyro.reset();
     m_gyro.reset();
+    //m_gyro.setAngleAdjustment(0);
   }
 
   /**
@@ -215,7 +232,10 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+    //double temp = (m_gyro.getAngle()+360)%360;
+    //double temp = m_gyro.getAngle();
+    //return temp * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   /**

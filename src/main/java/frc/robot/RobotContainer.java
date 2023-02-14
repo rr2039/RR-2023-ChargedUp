@@ -78,9 +78,9 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
     new JoystickButton(m_driverController, Button.kY.value)
-        .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight));//.andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
+        .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
     new JoystickButton(m_driverController, Button.kB.value)
-        .onTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
+        .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
   }
 
   /**

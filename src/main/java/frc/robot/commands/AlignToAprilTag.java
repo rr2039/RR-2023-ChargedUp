@@ -22,6 +22,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utilities.LimelightHelpers;
 import frc.robot.utilities.LimelightInterface;
 
 public class AlignToAprilTag extends CommandBase {
@@ -59,7 +60,7 @@ public class AlignToAprilTag extends CommandBase {
     //Pose2d aprilTagPos = limelight.getAprilTagPos();
     // Find where that is in relation to robots current pose
     Pose2d endPoint;
-    double aprilTagId = limelight.aprilTagId();
+    double aprilTagId = LimelightHelpers.getFiducialID("");
     switch((int) aprilTagId) {
       case 6:
         endPoint = Constants.APRILTAG_6_POS;
@@ -84,8 +85,8 @@ public class AlignToAprilTag extends CommandBase {
         robotDrive::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
         // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(AutoConstants.kPXController, 0, 0.5),
+        new PIDController(AutoConstants.kPYController, 0, 0.5),
         thetaController,
         robotDrive::setModuleStates,
         robotDrive);
