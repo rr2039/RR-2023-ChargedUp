@@ -38,6 +38,24 @@ public final class Constants {
     public static final double limelightDetectionDistance = 3;
   }
 
+  public static final class GripperConstants {
+    public static final int kPrimaryForward = 0;
+    public static final int kPrimaryReverse = 1;
+    public static final int kSecondary = 2;
+  }
+
+  public static final class ArmConstants {
+    public static final int kRightShoulderCanId = 0;
+    public static final int kLeftShoulderCanId = 1;
+    public static final int kRightExtendyGirlCanId = 2;
+    public static final int kLeftExtendyGirlCanId = 3;
+    public static final int kRightExtendyBoyCanId = 4;
+    public static final int kLeftExtendyBoyCanId = 5; 
+    public static final int kRightWristPitchCanId = 6;
+    public static final int kLeftWristPitchCanId = 7;
+    public static final int kWristRollCanId = 8;
+  }
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
