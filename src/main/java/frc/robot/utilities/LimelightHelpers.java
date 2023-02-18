@@ -84,7 +84,7 @@ public class LimelightHelpers {
         }
         public Pose2d getTargetPose_RobotSpace2D()
         {
-            return toPose2D(targetPose_RobotSpace);
+            return toPose2DFixLimelightsGlaringMistake(targetPose_RobotSpace);
         }
 
         @JsonProperty("ta")
@@ -177,7 +177,7 @@ public class LimelightHelpers {
         }
         public Pose2d getTargetPose_RobotSpace2D()
         {
-            return toPose2D(targetPose_RobotSpace);
+            return toPose2DFixLimelightsGlaringMistake(targetPose_RobotSpace);
         }
         
         @JsonProperty("ta")
@@ -402,6 +402,17 @@ public class LimelightHelpers {
         }
         Translation2d tran2d = new Translation2d(inData[0], inData[1]);
         Rotation2d r2d = new Rotation2d(Units.degreesToRadians(inData[5]));
+        return new Pose2d(tran2d, r2d);
+    }
+
+    public static Pose2d toPose2DFixLimelightsGlaringMistake(double[] inData) {
+        if(inData.length < 6)
+        {
+            System.err.println("Bad LL 2D Pose Data!");
+            return new Pose2d();
+        }
+        Translation2d tran2d = new Translation2d(inData[2], inData[0]);
+        Rotation2d r2d = new Rotation2d(Units.degreesToRadians(inData[4]));
         return new Pose2d(tran2d, r2d);
     }
 

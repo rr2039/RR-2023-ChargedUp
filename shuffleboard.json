@@ -226,6 +226,19 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "22,3": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Heading",
+              "_title": "Heading",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }

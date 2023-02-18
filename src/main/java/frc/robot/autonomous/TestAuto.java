@@ -28,7 +28,7 @@ public class TestAuto extends SequentialCommandGroup {
   public TestAuto(DriveSubsystem m_robotDrive) {
     // This will load the file "FullAuto.path" and generate it with a max velocity of 4 m/s and a max acceleration of 3 m/s^2
     // for every path in the group
-    ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("GrabCone", new PathConstraints(1, 1), new PathConstraints(1, 1));
+    ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("Circle", new PathConstraints(3, 2), new PathConstraints(3, 2));
 
     // This is just an example event map. It would be better to have a constant, global event map
     // in your code that will be used by all path following commands.
@@ -42,8 +42,8 @@ public class TestAuto extends SequentialCommandGroup {
       m_robotDrive::getPose, // Pose2d supplier
       m_robotDrive::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
       DriveConstants.kDriveKinematics, // SwerveDriveKinematics
-      new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-      new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+      new PIDConstants(6.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+      new PIDConstants(1.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
       m_robotDrive::setModuleStates, // Module states consumer used to output to the drive subsystem
       eventMap,
       true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
