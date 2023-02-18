@@ -101,6 +101,31 @@ public class ArmSubsystem extends SubsystemBase {
     shoulderPID.setReference(degrees, ControlType.kPosition);
   }
 
+  public void moveShoudler(double speed) {
+    rightShoulder.set(speed);
+  }
+
+  public void moveExtendyGirls(double speed) {
+    rightExtendyGirl.set(speed);
+  }
+  
+  public void moveExtendyBoys(double speed) {
+    rightExtendyBoy.set(speed);
+  }
+
+  public void moveWristPitch(double speed) {
+    rightWristPitch.set(speed);
+  }
+
+  public void moveWristRoll(double speed) {
+    wristRoll.set(speed);
+  }
+
+  public void moveExtendors(double speed) {
+    rightExtendyGirl.set(speed);
+    rightExtendyBoy.set(speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
