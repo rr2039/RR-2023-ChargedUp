@@ -6,7 +6,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+
 import frc.robot.Constants.ArmConstants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,6 +35,12 @@ public class ArmSubsystem extends SubsystemBase {
   RelativeEncoder wristPitchEnc;
   RelativeEncoder wristRollEnc;
 
+  SparkMaxPIDController shoulderPID;
+  SparkMaxPIDController extendyGirlPID;
+  SparkMaxPIDController extendyBoyPID;
+  SparkMaxPIDController wristPitchPID;
+  SparkMaxPIDController wristRollPID;
+  
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
 
@@ -52,12 +64,41 @@ public class ArmSubsystem extends SubsystemBase {
     rightExtendyBoy.setInverted(true);
     rightWristPitch.setInverted(true);
 
+    rightShoulder.setIdleMode(IdleMode.kBrake);
+    leftShoulder.setIdleMode(IdleMode.kBrake);
+    rightExtendyGirl.setIdleMode(IdleMode.kBrake);
+    leftExtendyGirl.setIdleMode(IdleMode.kBrake);
+    rightExtendyBoy.setIdleMode(IdleMode.kBrake);
+    leftExtendyBoy.setIdleMode(IdleMode.kBrake);
+    rightWristPitch.setIdleMode(IdleMode.kBrake);
+    leftWristPitch.setIdleMode(IdleMode.kBrake);
+    wristRoll.setIdleMode(IdleMode.kBrake);
+
     shoulderEnc = rightShoulder.getEncoder();
     extendyGirlEnc = rightExtendyGirl.getEncoder();
     extendyBoyEnc = rightExtendyBoy.getEncoder();
     wristPitchEnc = rightWristPitch.getEncoder();
     wristRollEnc = wristRoll.getEncoder();
 
+    shoulderPID = rightShoulder.getPIDController();
+    extendyGirlPID = rightExtendyGirl.getPIDController();
+    extendyBoyPID = rightExtendyBoy.getPIDController();
+    wristPitchPID = rightWristPitch.getPIDController();
+    wristRollPID = wristRoll.getPIDController();
+
+    rightShoulder.burnFlash();
+    leftShoulder.burnFlash();
+    rightExtendyGirl.burnFlash();
+    leftExtendyGirl.burnFlash();
+    rightExtendyBoy.burnFlash();
+    leftExtendyBoy.burnFlash();
+    rightWristPitch.burnFlash();
+    leftWristPitch.burnFlash();
+    wristRoll.burnFlash();
+  }
+
+  public void moveShoulderToPosition(double degrees) {
+    shoulderPID.setReference(degrees, ControlType.kPosition);
   }
 
   @Override
