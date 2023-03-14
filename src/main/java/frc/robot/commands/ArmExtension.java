@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ArmExtensionSubsystem;
 
 public class ArmExtension extends CommandBase {
-  ArmSubsystem arm = null;
+  ArmExtensionSubsystem arm = null;
   double speed = 0;
   /** Creates a new ArmExtension. */
-  public ArmExtension(ArmSubsystem m_arm, double m_speed) {
+  public ArmExtension(ArmExtensionSubsystem m_arm, double m_speed) {
     arm = m_arm;
     speed = m_speed;
     // Use addRequirements() here to declare subsystem dependencies.

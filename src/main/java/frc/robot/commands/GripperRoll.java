@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem; 
+import frc.robot.subsystems.GripperRollSubsystem; 
 
 public class GripperRoll extends CommandBase {
-  ArmSubsystem wrist = null;
+  GripperRollSubsystem wrist = null;
   double speed = 0;
   /** Creates a new GripperRollLeft. */
-  public GripperRoll(ArmSubsystem m_wrist, double m_speed) {
+  public GripperRoll(GripperRollSubsystem m_wrist, double m_speed) {
     wrist = m_wrist;
     speed = m_speed;
     // Use addRequirements() here to declare subsystem dependencies.

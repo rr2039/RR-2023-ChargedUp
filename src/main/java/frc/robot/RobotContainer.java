@@ -18,8 +18,11 @@ import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
 import frc.robot.commands.GripperPitch;
 import frc.robot.commands.GripperRoll;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ArmExtensionSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.GripperPitchSubsystem;
+import frc.robot.subsystems.GripperRollSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utilities.LimelightInterface;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.GripperRoll;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -40,7 +42,10 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final LimelightInterface m_limelight = new LimelightInterface(m_robotDrive);
   private final GripperSubsystem m_gripper = new GripperSubsystem();
-  private final ArmSubsystem m_arm = new ArmSubsystem();
+  private final ShoulderSubsystem m_arm = new ShoulderSubsystem();
+  private final GripperPitchSubsystem m_gripperPitch = new GripperPitchSubsystem();
+  private final GripperRollSubsystem m_gripperRoll = new GripperRollSubsystem();
+  private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -101,17 +106,17 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
-    DpadRight.onTrue(new GripperRoll(m_arm, 0.1)).onFalse(new GripperRoll(m_arm, 0));
+    DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
-    DpadLeft.onTrue(new GripperRoll(m_arm, -0.1)).onFalse(new GripperRoll(m_arm, 0));
+    DpadLeft.onTrue(new GripperRoll(m_gripperRoll, -0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadUp = new POVButton(m_operatorController, 0);
-    DpadUp.onTrue(new GripperPitch(m_arm, 0.1)).onFalse(new GripperPitch(m_arm, 0));
+    DpadUp.onTrue(new GripperPitch(m_gripperPitch, 0.1)).onFalse(new GripperPitch(m_gripperPitch, 0));
     Trigger DpadDown = new POVButton(m_operatorController, 180);
-    DpadDown.onTrue(new GripperPitch(m_arm, -0.1)).onFalse(new GripperPitch(m_arm, 0));
+    DpadDown.onTrue(new GripperPitch(m_gripperPitch, -0.1)).onFalse(new GripperPitch(m_gripperPitch, 0));
     Trigger AButton = new JoystickButton(m_operatorController, 2);
-    AButton.onTrue(new ArmExtension(m_arm, 0.1)).onFalse(new ArmExtension(m_arm, 0));
+    AButton.onTrue(new ArmExtension(m_armExtension, 0.1)).onFalse(new ArmExtension(m_armExtension, 0));
     Trigger BButton = new JoystickButton(m_operatorController, 3);
-    BButton.onTrue(new ArmExtension(m_arm, -0.1)).onFalse(new ArmExtension(m_arm, 0));
+    BButton.onTrue(new ArmExtension(m_armExtension, -0.1)).onFalse(new ArmExtension(m_armExtension, 0));
   }
 
   /**
