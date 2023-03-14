@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -13,27 +14,28 @@ import frc.robot.Constants.GripperConstants;
 
 public class GripperSubsystem extends SubsystemBase {
 
-  DoubleSolenoid primaryPistons;
+  PneumaticHub m_pH = new PneumaticHub(2);
+  Solenoid primaryPistons;
   Solenoid secondaryPistons; 
 
   /** Creates a new GripperSubsystem. */
   public GripperSubsystem() {
-    primaryPistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, GripperConstants.kPrimaryForward, GripperConstants.kPrimaryReverse);
-    secondaryPistons = new Solenoid(PneumaticsModuleType.CTREPCM, GripperConstants.kSecondary);
+    primaryPistons = m_pH.makeSolenoid(1);
+    secondaryPistons = m_pH.makeSolenoid(0);
   }
 
   public void open() {
-    primaryPistons.set(Value.kReverse);
+    primaryPistons.set(true);
     secondaryPistons.set(false);
   }
 
   public void hardClose() {
-    primaryPistons.set(Value.kForward);
+    primaryPistons.set(false);
     secondaryPistons.set(true);
   }
 
   public void softClose() {
-    primaryPistons.set(Value.kForward);
+    primaryPistons.set(false);
     secondaryPistons.set(false);
   }
 

@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -13,6 +15,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.autonomous.DefaultAuto;
 import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.AlignToAprilTag;
+import frc.robot.commands.ArmExtension;
+import frc.robot.commands.GripperPitch;
+import frc.robot.commands.GripperRoll;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
@@ -20,6 +25,9 @@ import frc.robot.utilities.LimelightInterface;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.GripperRoll;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -36,7 +44,7 @@ public class RobotContainer {
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  //GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
+  GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 
   // Auto Chooser for Dashboard
   SendableChooser<Command> auto_chooser = new SendableChooser<>();
@@ -58,7 +66,12 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRawAxis(1), 0.06),
                 MathUtil.applyDeadband(-m_driverController.getRawAxis(4), 0.06),
                 true),
-            m_robotDrive));
+            m_robotDrive)
+    );
+    m_arm.setDefaultCommand(
+      new RunCommand(() -> m_arm.moveShoudler(m_operatorController.getRawAxis(1) * 0.25), m_arm).andThen(() -> m_arm.moveShoudler(0.0))
+    );
+
 
     // Auto Options
     auto_chooser.setDefaultOption("TestAuto", new TestAuto(m_robotDrive));
@@ -84,6 +97,21 @@ public class RobotContainer {
         .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
     new JoystickButton(m_driverController, Button.kB.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
+
+    new JoystickButton(m_operatorController, 1)
+        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
+    Trigger DpadRight = new POVButton(m_operatorController, 90);
+    DpadRight.onTrue(new GripperRoll(m_arm, 0.1)).onFalse(new GripperRoll(m_arm, 0));
+    Trigger DpadLeft = new POVButton(m_operatorController, 270);
+    DpadLeft.onTrue(new GripperRoll(m_arm, -0.1)).onFalse(new GripperRoll(m_arm, 0));
+    Trigger DpadUp = new POVButton(m_operatorController, 0);
+    DpadUp.onTrue(new GripperPitch(m_arm, 0.1)).onFalse(new GripperPitch(m_arm, 0));
+    Trigger DpadDown = new POVButton(m_operatorController, 180);
+    DpadDown.onTrue(new GripperPitch(m_arm, -0.1)).onFalse(new GripperPitch(m_arm, 0));
+    Trigger AButton = new JoystickButton(m_operatorController, 2);
+    AButton.onTrue(new ArmExtension(m_arm, 0.1)).onFalse(new ArmExtension(m_arm, 0));
+    Trigger BButton = new JoystickButton(m_operatorController, 3);
+    BButton.onTrue(new ArmExtension(m_arm, -0.1)).onFalse(new ArmExtension(m_arm, 0));
   }
 
   /**

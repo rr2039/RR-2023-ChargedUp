@@ -39,21 +39,20 @@ public final class Constants {
   }
 
   public static final class GripperConstants {
-    public static final int kPrimaryForward = 0;
-    public static final int kPrimaryReverse = 1;
+    public static final int kPrimary = 0;
     public static final int kSecondary = 2;
   }
 
   public static final class ArmConstants {
-    public static final int kRightShoulderCanId = 0;
-    public static final int kLeftShoulderCanId = 1;
-    public static final int kRightExtendyGirlCanId = 2;
-    public static final int kLeftExtendyGirlCanId = 3;
-    public static final int kRightExtendyBoyCanId = 4;
-    public static final int kLeftExtendyBoyCanId = 5; 
-    public static final int kRightWristPitchCanId = 6;
-    public static final int kLeftWristPitchCanId = 7;
-    public static final int kWristRollCanId = 8;
+    public static final int kRightShoulderCanId = 26;
+    public static final int kLeftShoulderCanId = 25;
+    public static final int kRightExtendyGirlCanId = 32;
+    public static final int kLeftExtendyGirlCanId = 33;
+    public static final int kRightExtendyBoyCanId = 34;
+    public static final int kLeftExtendyBoyCanId = 35; 
+    public static final int kRightWristPitchCanId = 36;
+    public static final int kLeftWristPitchCanId = 37;
+    public static final int kWristRollCanId = 38;
   }
 
   public static final class DriveConstants {
@@ -146,6 +145,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static final class AutoConstants {

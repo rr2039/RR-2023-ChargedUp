@@ -54,15 +54,26 @@ public class ArmSubsystem extends SubsystemBase {
     leftWristPitch = new CANSparkMax(ArmConstants.kLeftWristPitchCanId, MotorType.kBrushless);
     wristRoll = new CANSparkMax(ArmConstants.kWristRollCanId, MotorType.kBrushless);
 
-    leftShoulder.follow(rightShoulder);
-    leftExtendyGirl.follow(rightExtendyGirl);
-    leftExtendyBoy.follow(rightExtendyBoy);
-    leftWristPitch.follow(rightWristPitch);
+    rightShoulder.restoreFactoryDefaults();
+    leftShoulder.restoreFactoryDefaults();
+    leftExtendyGirl.restoreFactoryDefaults();
+    rightExtendyGirl.restoreFactoryDefaults();
+    leftExtendyBoy.restoreFactoryDefaults();
+    rightExtendyBoy.restoreFactoryDefaults();
+    rightWristPitch.restoreFactoryDefaults();
+    leftWristPitch.restoreFactoryDefaults();
+    wristRoll.restoreFactoryDefaults();
 
-    rightShoulder.setInverted(true);
-    rightExtendyGirl.setInverted(true);
-    rightExtendyBoy.setInverted(true);
-    rightWristPitch.setInverted(true);
+    //rightShoulder.setInverted(true);
+
+    leftShoulder.follow(rightShoulder, true);
+    leftExtendyGirl.follow(rightExtendyGirl, true);
+    leftExtendyBoy.follow(rightExtendyBoy, true);
+    leftWristPitch.follow(rightWristPitch, true);
+
+    //rightExtendyGirl.setInverted(true);
+    //rightExtendyBoy.setInverted(true);
+    //rightWristPitch.setInverted(true);
 
     rightShoulder.setIdleMode(IdleMode.kBrake);
     leftShoulder.setIdleMode(IdleMode.kBrake);
@@ -85,6 +96,8 @@ public class ArmSubsystem extends SubsystemBase {
     extendyBoyPID = rightExtendyBoy.getPIDController();
     wristPitchPID = rightWristPitch.getPIDController();
     wristRollPID = wristRoll.getPIDController();
+
+    shoulderPID.setFF(1);
 
     rightShoulder.burnFlash();
     leftShoulder.burnFlash();
