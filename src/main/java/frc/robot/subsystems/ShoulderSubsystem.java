@@ -30,6 +30,11 @@ public class ShoulderSubsystem extends SubsystemBase {
   SparkMaxPIDController shoulderPID;
 
   ShuffleboardTab shoulderTab = Shuffleboard.getTab("Arm");
+  GenericEntry shoulderPos;
+  GenericEntry shoulderP;
+  GenericEntry shoulderI;
+  GenericEntry shoulderD;
+  GenericEntry shoulderFF;
   
   /** Creates a new ArmSubsystem. */
   public ShoulderSubsystem() {
@@ -47,12 +52,17 @@ public class ShoulderSubsystem extends SubsystemBase {
     
     shoulderEnc = rightShoulder.getEncoder();
     shoulderEnc.setPosition(0);
+    shoulderPos = shoulderTab.add("ShoulderPos", getShoulderPos()).getEntry();
 
     shoulderPID = rightShoulder.getPIDController();
     shoulderPID.setP(ArmConstants.kShoulderP);
+    shoulderP = shoulderTab.add("ShoulderP", shoulderPID.getP()).getEntry();
     shoulderPID.setI(ArmConstants.kShoulderI);
+    shoulderI = shoulderTab.add("ShoulderI", shoulderPID.getI()).getEntry();
     shoulderPID.setD(ArmConstants.kShoulderD);
+    shoulderD = shoulderTab.add("ShoulderD", shoulderPID.getD()).getEntry();
     shoulderPID.setFF(ArmConstants.kShoulderFF);
+    shoulderFF = shoulderTab.add("ShoulderFF", shoulderPID.getFF()).getEntry();
 
     rightShoulder.burnFlash();
     leftShoulder.burnFlash();
@@ -73,22 +83,22 @@ public class ShoulderSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    shoulderTab.add("ShoulderPos", getShoulderPos());
-    GenericEntry tempP = shoulderTab.add("Shoulder P", shoulderPID.getP()).getEntry();
-    if (shoulderPID.getP() != tempP.getDouble(ArmConstants.kShoulderP)) {
-      shoulderPID.setP(tempP.getDouble(ArmConstants.kShoulderP));
+    shoulderPos.setDouble(getShoulderPos());
+    double tempP = shoulderP.getDouble(shoulderPID.getP());
+    if (shoulderPID.getP() != tempP) {
+      shoulderPID.setP(tempP);
     }
-    GenericEntry tempI = shoulderTab.add("Shoulder I", shoulderPID.getI()).getEntry();
-    if (shoulderPID.getI() != tempI.getDouble(ArmConstants.kShoulderI)) {
-      shoulderPID.setI(tempI.getDouble(ArmConstants.kShoulderI));
+    double tempI = shoulderI.getDouble(shoulderPID.getI());
+    if (shoulderPID.getI() != tempI) {
+      shoulderPID.setI(tempI);
     }
-    GenericEntry tempD = shoulderTab.add("Shoulder D", shoulderPID.getD()).getEntry();
-    if (shoulderPID.getD() != tempD.getDouble(ArmConstants.kShoulderD)) {
-      shoulderPID.setD(tempD.getDouble(ArmConstants.kShoulderD));
+    double tempD = shoulderD.getDouble(shoulderPID.getD());
+    if (shoulderPID.getD() != tempD) {
+      shoulderPID.setD(tempD);
     }
-    GenericEntry tempFF = shoulderTab.add("Shoulder FF", shoulderPID.getFF()).getEntry();
-    if (shoulderPID.getFF() != tempFF.getDouble(ArmConstants.kShoulderFF)) {
-      shoulderPID.setFF(tempFF.getDouble(ArmConstants.kShoulderFF));
+    double tempFF = shoulderFF.getDouble(shoulderPID.getFF());
+    if (shoulderPID.getFF() != tempFF) {
+      shoulderPID.setFF(tempFF);
     }
   }
 }

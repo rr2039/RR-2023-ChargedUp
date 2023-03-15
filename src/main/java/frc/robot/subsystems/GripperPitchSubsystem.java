@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,6 +28,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
   SparkMaxPIDController wristPitchPID;
 
   ShuffleboardTab gripperPitchTab = Shuffleboard.getTab("Arm");
+  GenericEntry gripperPitchPos;
   
   /** Creates a new GripperPitchSubsystem. */
   public GripperPitchSubsystem() {
@@ -44,6 +46,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
     wristPitchEnc = rightWristPitch.getEncoder();
     wristPitchEnc.setPosition(0);
+    gripperPitchPos = gripperPitchTab.add("Gripper Pitch Pos", getWristPitchPos()).getEntry();
 
     wristPitchPID = rightWristPitch.getPIDController();
 
@@ -62,6 +65,6 @@ public class GripperPitchSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    gripperPitchTab.add("Gripper Pitch", getWristPitchPos());
+    gripperPitchPos.setDouble(getWristPitchPos());
   }
 }
