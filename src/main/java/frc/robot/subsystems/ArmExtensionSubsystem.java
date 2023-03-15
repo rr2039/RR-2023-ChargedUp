@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,6 +34,8 @@ public class ArmExtensionSubsystem extends SubsystemBase {
 
   // Shuffleboard Tab for Shoulder Updates
   ShuffleboardTab armExtensionTab = Shuffleboard.getTab("Arm");
+  GenericEntry extendyBoyPos;
+  GenericEntry extendyGirlPos;
 
   /** Creates a new ArmExtensionSubsystem. */
   public ArmExtensionSubsystem() {
@@ -57,9 +60,10 @@ public class ArmExtensionSubsystem extends SubsystemBase {
 
     extendyGirlEnc = rightExtendyGirl.getEncoder();
     extendyBoyEnc = rightExtendyBoy.getEncoder();
-
     extendyBoyEnc.setPosition(0);
     extendyGirlEnc.setPosition(0);
+    extendyBoyPos = armExtensionTab.add("Extendy Boy Pos", getExtendyBoyPos()).getEntry();
+    extendyGirlPos = armExtensionTab.add("Extendy Girl Pos", getExtendyGirlPos()).getEntry();
 
     extendyGirlPID = rightExtendyGirl.getPIDController();
     extendyBoyPID = rightExtendyBoy.getPIDController();
@@ -95,7 +99,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    armExtensionTab.add("ExtendyBoyPos", getExtendyBoyPos());
-    armExtensionTab.add("ExtendyGirlPos", getExtendyGirlPos());
+    extendyBoyPos.setDouble(getExtendyBoyPos());
+    extendyGirlPos.setDouble(getExtendyGirlPos());
   }
 }
