@@ -32,6 +32,7 @@ public class ShoulderSubsystem extends SubsystemBase {
 
   ShuffleboardTab shoulderTab = Shuffleboard.getTab("Arm");
   GenericEntry shoulderPos;
+  GenericEntry shoulderSetpoint;
   GenericEntry shoulderP;
   GenericEntry shoulderI;
   GenericEntry shoulderD;
@@ -70,10 +71,16 @@ public class ShoulderSubsystem extends SubsystemBase {
 
     rightShoulder.burnFlash();
     leftShoulder.burnFlash();
+
+    shoulderSetpoint = shoulderTab.add("ShoulderSetpoint", 0).getEntry();
   }
 
   public void moveShoulderToPosition(double degrees) {
     shoulderPID.setReference(degrees, ControlType.kPosition);
+  }
+
+  public void moveShoulderToSetpoint() {
+    shoulderPID.setReference(shoulderSetpoint.getDouble(0), ControlType.kPosition);
   }
 
   public void moveShoudler(double speed) {

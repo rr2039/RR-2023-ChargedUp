@@ -104,11 +104,13 @@ public class RobotContainer {
         .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
     new JoystickButton(m_driverController, Button.kB.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
+    new JoystickButton(m_operatorController, 7)
+        .whileTrue(new RunCommand(()-> m_shoulder.moveShoulderToSetpoint(), m_shoulder));
 
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
     new JoystickButton(m_operatorController, 4)
-        .onTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToPos(), m_gripperPitch));
+        .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToPos(), m_gripperPitch));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
