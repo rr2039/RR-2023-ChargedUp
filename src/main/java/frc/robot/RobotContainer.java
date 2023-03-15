@@ -116,10 +116,10 @@ public class RobotContainer {
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
     DpadLeft.onTrue(new GripperRoll(m_gripperRoll, -0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
-    //Trigger DpadUp = new POVButton(m_operatorController, 0);
-    //DpadUp.onTrue(new GripperPitch(m_gripperPitch, 0.1)).onFalse(new GripperPitch(m_gripperPitch, 0));
-    //Trigger DpadDown = new POVButton(m_operatorController, 180);
-    //DpadDown.onTrue(new GripperPitch(m_gripperPitch, -0.1)).onFalse(new GripperPitch(m_gripperPitch, 0));
+    Trigger DpadUp = new POVButton(m_operatorController, 0);
+    DpadUp.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(-0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));
+    Trigger DpadDown = new POVButton(m_operatorController, 180);
+    DpadDown.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));
     Trigger LeftBumper = new JoystickButton(m_operatorController, 5);
     LeftBumper.onTrue(new ArmExtension(m_armExtension, -0.25)).onFalse(new ArmExtension(m_armExtension, 0));
     Trigger RightBumper = new JoystickButton(m_operatorController, 6);
