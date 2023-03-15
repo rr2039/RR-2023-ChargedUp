@@ -53,6 +53,11 @@ public final class Constants {
     public static final int kRightWristPitchCanId = 36;
     public static final int kLeftWristPitchCanId = 37;
     public static final int kWristRollCanId = 38;
+
+    public static final double kShoulderP = 0;
+    public static final double kShoulderI = 0;
+    public static final double kShoulderD = 0;
+    public static final double kShoulderFF = 0;
   }
 
   public static final class DriveConstants {
