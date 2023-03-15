@@ -78,7 +78,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
   }
 
   public void moveWristPitchToPos() {
-    wristPitchPID.setReference(getWristPitchPos(), ControlType.kPosition);
+    wristPitchPID.setReference(gripperSetPoint.getDouble(0), ControlType.kPosition);
   }
 
   public double getWristPitchPos() {
