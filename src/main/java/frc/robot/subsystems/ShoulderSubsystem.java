@@ -74,19 +74,19 @@ public class ShoulderSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shoulderTab.add("ShoulderPos", getShoulderPos());
-    GenericEntry tempP = shoulderTab.add("Shoulder P", ArmConstants.kShoulderP).getEntry();
+    GenericEntry tempP = shoulderTab.add("Shoulder P", shoulderPID.getP()).getEntry();
     if (shoulderPID.getP() != tempP.getDouble(ArmConstants.kShoulderP)) {
       shoulderPID.setP(tempP.getDouble(ArmConstants.kShoulderP));
     }
-    GenericEntry tempI = shoulderTab.add("Shoulder I", ArmConstants.kShoulderI).getEntry();
+    GenericEntry tempI = shoulderTab.add("Shoulder I", shoulderPID.getI()).getEntry();
     if (shoulderPID.getI() != tempI.getDouble(ArmConstants.kShoulderI)) {
       shoulderPID.setI(tempI.getDouble(ArmConstants.kShoulderI));
     }
-    GenericEntry tempD = shoulderTab.add("Shoulder D", ArmConstants.kShoulderD).getEntry();
+    GenericEntry tempD = shoulderTab.add("Shoulder D", shoulderPID.getD()).getEntry();
     if (shoulderPID.getD() != tempD.getDouble(ArmConstants.kShoulderD)) {
       shoulderPID.setD(tempD.getDouble(ArmConstants.kShoulderD));
     }
-    GenericEntry tempFF = shoulderTab.add("Shoulder FF", ArmConstants.kShoulderFF).getEntry();
+    GenericEntry tempFF = shoulderTab.add("Shoulder FF", shoulderPID.getFF()).getEntry();
     if (shoulderPID.getFF() != tempFF.getDouble(ArmConstants.kShoulderFF)) {
       shoulderPID.setFF(tempFF.getDouble(ArmConstants.kShoulderFF));
     }
