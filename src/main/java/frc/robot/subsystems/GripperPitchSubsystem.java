@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
@@ -29,6 +30,11 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
   ShuffleboardTab gripperPitchTab = Shuffleboard.getTab("Arm");
   GenericEntry gripperPitchPos;
+  GenericEntry gripperSetPoint;
+  GenericEntry gripperPitchP;
+  GenericEntry gripperPitchI;
+  GenericEntry gripperPitchD;
+  GenericEntry gripperPitchFF;
   
   /** Creates a new GripperPitchSubsystem. */
   public GripperPitchSubsystem() {
@@ -38,6 +44,9 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
     rightWristPitch.restoreFactoryDefaults();
     leftWristPitch.restoreFactoryDefaults();
+
+    rightWristPitch.setSoftLimit(SoftLimitDirection.kForward, 30);
+    rightWristPitch.setSoftLimit(SoftLimitDirection.kReverse, -40);
 
     leftWristPitch.follow(rightWristPitch, true);
 
@@ -49,13 +58,27 @@ public class GripperPitchSubsystem extends SubsystemBase {
     gripperPitchPos = gripperPitchTab.add("Gripper Pitch Pos", getWristPitchPos()).getEntry();
 
     wristPitchPID = rightWristPitch.getPIDController();
+    wristPitchPID.setP(ArmConstants.kShoulderP);
+    gripperPitchP = gripperPitchTab.add("GripperWP", wristPitchPID.getP()).getEntry();
+    wristPitchPID.setI(ArmConstants.kShoulderI);
+    gripperPitchI = gripperPitchTab.add("GripperWI", wristPitchPID.getI()).getEntry();
+    wristPitchPID.setD(ArmConstants.kShoulderD);
+    gripperPitchD = gripperPitchTab.add("GripperWD", wristPitchPID.getD()).getEntry();
+    wristPitchPID.setFF(ArmConstants.kShoulderFF);
+    gripperPitchFF = gripperPitchTab.add("GripperWFF", wristPitchPID.getFF()).getEntry();
 
     rightWristPitch.burnFlash();
     leftWristPitch.burnFlash();
+
+    gripperSetPoint = gripperPitchTab.add("GripperW Setpoint", 0).getEntry();
   }
 
   public void moveWristPitch(double speed) {
     rightWristPitch.set(speed);
+  }
+
+  public void moveWristPitchToPos() {
+    wristPitchPID.setReference(getWristPitchPos(), ControlType.kPosition);
   }
 
   public double getWristPitchPos() {
@@ -66,5 +89,22 @@ public class GripperPitchSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     gripperPitchPos.setDouble(getWristPitchPos());
+    gripperSetPoint.getDouble(0);
+    double tempP = gripperPitchP.getDouble(wristPitchPID.getP());
+    if (wristPitchPID.getP() != tempP) {
+      wristPitchPID.setP(tempP);
+    }
+    double tempI = gripperPitchI.getDouble(wristPitchPID.getI());
+    if (wristPitchPID.getI() != tempI) {
+      wristPitchPID.setI(tempI);
+    }
+    double tempD = gripperPitchD.getDouble(wristPitchPID.getD());
+    if (wristPitchPID.getD() != tempD) {
+      wristPitchPID.setD(tempD);
+    }
+    double tempFF = gripperPitchFF.getDouble(wristPitchPID.getFF());
+    if (wristPitchPID.getFF() != tempFF) {
+      wristPitchPID.setFF(tempFF);
+    }
   }
 }

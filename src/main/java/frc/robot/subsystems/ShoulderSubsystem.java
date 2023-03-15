@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
@@ -44,6 +45,9 @@ public class ShoulderSubsystem extends SubsystemBase {
 
     rightShoulder.restoreFactoryDefaults();
     leftShoulder.restoreFactoryDefaults();
+
+    rightShoulder.setSoftLimit(SoftLimitDirection.kForward, 40);
+    rightShoulder.setSoftLimit(SoftLimitDirection.kReverse, -40);
 
     leftShoulder.follow(rightShoulder, true);
 

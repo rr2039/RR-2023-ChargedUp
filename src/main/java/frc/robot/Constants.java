@@ -58,6 +58,11 @@ public final class Constants {
     public static final double kShoulderI = 0;
     public static final double kShoulderD = 0;
     public static final double kShoulderFF = 0;
+
+    public static final double kWristPitchP = 0;
+    public static final double kWristPitchI = 0;
+    public static final double kWristPitchD = 0;
+    public static final double kWristPitchFF = 0;
   }
 
   public static final class DriveConstants {

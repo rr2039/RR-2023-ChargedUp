@@ -107,6 +107,8 @@ public class RobotContainer {
 
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
+    new JoystickButton(m_operatorController, 4)
+        .onTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToPos(), m_gripperPitch));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
