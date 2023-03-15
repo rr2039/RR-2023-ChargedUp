@@ -18,6 +18,7 @@ import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
 import frc.robot.commands.GripperPitch;
 import frc.robot.commands.GripperRoll;
+import frc.robot.commands.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -110,7 +111,9 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
     new JoystickButton(m_operatorController, 4)
-        .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToPos(), m_gripperPitch));
+        .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToSetPoint(), m_gripperPitch));
+    new JoystickButton(m_operatorController, 8)
+        .onTrue(new TransportPosition(m_shoulder, m_gripperPitch));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
