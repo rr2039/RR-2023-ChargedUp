@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,7 +15,6 @@ import frc.robot.autonomous.DefaultAuto;
 import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
-import frc.robot.commands.GripperPitch;
 import frc.robot.commands.GripperRoll;
 import frc.robot.commands.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
@@ -123,9 +121,9 @@ public class RobotContainer {
     //Trigger DpadDown = new POVButton(m_operatorController, 180);
     //DpadDown.onTrue(new GripperPitch(m_gripperPitch, -0.1)).onFalse(new GripperPitch(m_gripperPitch, 0));
     Trigger LeftBumper = new JoystickButton(m_operatorController, 5);
-    LeftBumper.onTrue(new ArmExtension(m_armExtension, -0.1)).onFalse(new ArmExtension(m_armExtension, 0));
+    LeftBumper.onTrue(new ArmExtension(m_armExtension, -0.25)).onFalse(new ArmExtension(m_armExtension, 0));
     Trigger RightBumper = new JoystickButton(m_operatorController, 6);
-    RightBumper.onTrue(new ArmExtension(m_armExtension, 0.1)).onFalse(new ArmExtension(m_armExtension, 0));
+    RightBumper.onTrue(new ArmExtension(m_armExtension, 0.25)).onFalse(new ArmExtension(m_armExtension, 0));
   }
 
   /**
