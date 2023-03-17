@@ -10,14 +10,14 @@ import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 
-public class TransportPosition extends CommandBase {
+public class TestPos extends CommandBase {
 
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
   ArmExtensionSubsystem arm;
 
   /** Creates a new TransportPosition. */
-  public TransportPosition(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
+  public TestPos(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
     shoulder = m_shoulder;
     gripper = m_gripperPitch;
     arm = m_arm;
@@ -32,10 +32,10 @@ public class TransportPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(0);
-    gripper.setWristCurSetpoint(0);
-    arm.setExtendyBoyCurSetpoint(0);
-    arm.setExtendyGirlCurSetpoint(0);
+    shoulder.setShoulderCurSetpoint(45);
+    gripper.setWristCurSetpoint(20);
+    arm.setExtendyBoyCurSetpoint(30);
+    arm.setExtendyGirlCurSetpoint(-30);
   }
 
   // Called once the command ends or is interrupted.

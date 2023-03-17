@@ -54,18 +54,28 @@ public final class Constants {
     public static final int kLeftWristPitchCanId = 37;
     public static final int kWristRollCanId = 38;
 
-    public static final double kShoulderP = 0;
+    public static final double kShoulderP = 0.015;
     public static final double kShoulderI = 0;
-    public static final double kShoulderD = 0;
+    public static final double kShoulderD = 1.0;
     public static final double kShoulderFF = 0;
-    public static final double kShoulderGravity = -0.96;
-    public static final double kShoulderStage1 = -0.01;
-    public static final double kShoulderStage2 = -0.01;
+    public static final double kShoulderGravity = -0.32;
+    public static final double kShoulderStage1 = 0.0;
+    public static final double kShoulderStage2 = 0.0;
 
-    public static final double kWristPitchP = 0.1;
+    public static final double kWristPitchP = 0.05;
     public static final double kWristPitchI = 0;
     public static final double kWristPitchD = 0;
     public static final double kWristPitchFF = 0.01;
+
+    public static final double kBoysP = 0.025;
+    public static final double kBoysI = 0;
+    public static final double kBoysD = 0;
+    public static final double kBoysFF = 0;
+
+    public static final double kGirlsP = 0.01725;
+    public static final double kGirlsI = 0;
+    public static final double kGirlsD = 0;
+    public static final double kGirlsFF = 0;
   }
 
   public static final class DriveConstants {

@@ -27,6 +27,8 @@ public class ShoulderSubsystem extends SubsystemBase {
 
   SparkMaxPIDController shoulderPID;
 
+  double shoulderCurSetpoint = 0;
+
   ShuffleboardTab shoulderTab = Shuffleboard.getTab("Arm");
   GenericEntry shoulderPos;
   GenericEntry shoulderSetpoint;
@@ -50,12 +52,15 @@ public class ShoulderSubsystem extends SubsystemBase {
     rightShoulder.setSoftLimit(SoftLimitDirection.kForward, 40);
     rightShoulder.setSoftLimit(SoftLimitDirection.kReverse, -40);
 
+    rightShoulder.setClosedLoopRampRate(1.0);
+
     leftShoulder.follow(rightShoulder, true);
 
     rightShoulder.setIdleMode(IdleMode.kBrake);
     leftShoulder.setIdleMode(IdleMode.kBrake);
     
     shoulderEnc = rightShoulder.getEncoder();
+    shoulderEnc.setPositionConversionFactor(2.482);
     shoulderEnc.setPosition(0);
     shoulderPos = shoulderTab.add("ShoulderPos", getShoulderPos()).getEntry();
 
@@ -75,6 +80,14 @@ public class ShoulderSubsystem extends SubsystemBase {
     shoulderSetpoint = shoulderTab.add("ShoulderSetpoint", 0).getEntry();
   }
 
+  public double getShoulderCurSetpoint() {
+    return shoulderCurSetpoint;
+  }
+
+  public void setShoulderCurSetpoint(double setpoint) {
+    shoulderCurSetpoint = setpoint;
+  }
+
   public void moveShoulderToPosition(double degrees, double arbFF) {
     shoulderPID.setReference(degrees, ControlType.kPosition, 0, arbFF);
   }
@@ -90,14 +103,14 @@ public class ShoulderSubsystem extends SubsystemBase {
   public double getShoulderPos() {
     // 36.5
     // -37.8
-    return shoulderEnc.getPosition() * 2.423;
+    return shoulderEnc.getPosition();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     shoulderPos.setDouble(getShoulderPos());
-    double tempP = shoulderP.getDouble(shoulderPID.getP(0));
+    /*double tempP = shoulderP.getDouble(shoulderPID.getP(0));
     if (shoulderPID.getP(0) != tempP) {
       shoulderPID.setP(tempP, 0);
     }
@@ -112,6 +125,6 @@ public class ShoulderSubsystem extends SubsystemBase {
     double tempFF = shoulderFF.getDouble(shoulderPID.getFF(0));
     if (shoulderPID.getFF(0) != tempFF) {
       shoulderPID.setFF(tempFF, 0);
-    }
+    }*/
   }
 }

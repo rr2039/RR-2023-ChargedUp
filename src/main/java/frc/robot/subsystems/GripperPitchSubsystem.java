@@ -26,6 +26,8 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
   SparkMaxPIDController wristPitchPID;
 
+  double wristCurSetpoint = 0;
+
   ShuffleboardTab gripperPitchTab = Shuffleboard.getTab("Arm");
   GenericEntry gripperPitchPos;
   GenericEntry gripperSetPoint;
@@ -45,6 +47,8 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
     rightWristPitch.setSoftLimit(SoftLimitDirection.kForward, 30);
     rightWristPitch.setSoftLimit(SoftLimitDirection.kReverse, -40);
+
+    rightWristPitch.setClosedLoopRampRate(0.5);
 
     leftWristPitch.follow(rightWristPitch, true);
 
@@ -71,6 +75,14 @@ public class GripperPitchSubsystem extends SubsystemBase {
     gripperSetPoint = gripperPitchTab.add("GripperW Setpoint", 0).getEntry();
   }
 
+  public double getWristCurSetpoint() {
+    return wristCurSetpoint;
+  }
+
+  public void setWristCurSetpoint(double setpoint) {
+    wristCurSetpoint = setpoint;
+  }
+
   public void moveWristPitch(double speed) {
     rightWristPitch.set(speed);
   }
@@ -91,7 +103,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     gripperPitchPos.setDouble(getWristPitchPos());
-    gripperSetPoint.getDouble(0);
+    /*gripperSetPoint.getDouble(0);
     double tempP = gripperPitchP.getDouble(wristPitchPID.getP());
     if (wristPitchPID.getP() != tempP) {
       wristPitchPID.setP(tempP);
@@ -107,6 +119,6 @@ public class GripperPitchSubsystem extends SubsystemBase {
     double tempFF = gripperPitchFF.getDouble(wristPitchPID.getFF());
     if (wristPitchPID.getFF() != tempFF) {
       wristPitchPID.setFF(tempFF);
-    }
+    }*/
   }
 }

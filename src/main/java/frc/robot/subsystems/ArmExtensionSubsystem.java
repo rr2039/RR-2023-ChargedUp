@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -29,6 +30,9 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   SparkMaxPIDController extendyGirlPID;
   SparkMaxPIDController extendyBoyPID;
 
+  double extendyGirlCurSetpoint = 0;
+  double extendyBoyCurSetpoint = 0;
+
   // Shuffleboard Tab for Shoulder Updates
   ShuffleboardTab armExtensionTab = Shuffleboard.getTab("Arm");
   GenericEntry extendyBoyPos;
@@ -47,6 +51,12 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     leftExtendyBoy.restoreFactoryDefaults();
     rightExtendyBoy.restoreFactoryDefaults();
 
+    rightExtendyGirl.setClosedLoopRampRate(3.5);
+    rightExtendyBoy.setClosedLoopRampRate(3.5);
+
+    //rightExtendyBoy.setSmartCurrentLimit(10, 40);
+    //rightExtendyGirl.setSmartCurrentLimit(10, 40);
+
     leftExtendyGirl.follow(rightExtendyGirl, true);
     leftExtendyBoy.follow(rightExtendyBoy, true);
 
@@ -63,13 +73,45 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     extendyGirlPos = armExtensionTab.add("Extendy Girl Pos", getExtendyGirlPos()).getEntry();
 
     extendyGirlPID = rightExtendyGirl.getPIDController();
+    extendyGirlPID.setP(ArmConstants.kGirlsP);
+    extendyGirlPID.setI(ArmConstants.kGirlsI);
+    extendyGirlPID.setD(ArmConstants.kGirlsD);
+    extendyGirlPID.setFF(ArmConstants.kGirlsFF);
     extendyBoyPID = rightExtendyBoy.getPIDController();
+    extendyBoyPID.setP(ArmConstants.kBoysP);
+    extendyBoyPID.setI(ArmConstants.kBoysI);
+    extendyBoyPID.setD(ArmConstants.kBoysD);
+    extendyBoyPID.setFF(ArmConstants.kBoysFF);
 
     rightExtendyGirl.burnFlash();
     leftExtendyGirl.burnFlash();
     rightExtendyBoy.burnFlash();
     leftExtendyBoy.burnFlash();
 
+  }
+
+  public double getExtendyBoyCurSetpoint() {
+    return extendyBoyCurSetpoint;
+  }
+
+  public double getExtendyGirlCurSetpoint() {
+    return extendyGirlCurSetpoint;
+  }
+
+  public void setExtendyBoyCurSetpoint(double setpoint) {
+    extendyBoyCurSetpoint = setpoint;
+  }
+
+  public void setExtendyGirlCurSetpoint(double setpoint) {
+    extendyGirlCurSetpoint = setpoint;
+  }
+
+  public void moveExtendyGirlsToPos(double pos) {
+    extendyGirlPID.setReference(pos, ControlType.kPosition);
+  }
+
+  public void moveExtendyBoysToPos(double pos) {
+    extendyBoyPID.setReference(pos, ControlType.kPosition);
   }
 
   public void moveExtendyGirls(double speed) {

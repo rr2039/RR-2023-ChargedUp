@@ -18,7 +18,9 @@ import frc.robot.autonomous.OnlyAutoBottom;
 import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
+import frc.robot.commands.GodCommand;
 import frc.robot.commands.GripperRoll;
+import frc.robot.commands.TestPos;
 import frc.robot.commands.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -75,12 +77,10 @@ public class RobotContainer {
                 true),
             m_robotDrive)
     );
-    m_shoulder.setDefaultCommand(
-      new RunCommand(() -> m_shoulder.moveShoudler(m_operatorController.getRawAxis(1) * 0.25), m_shoulder).andThen(() -> m_shoulder.moveShoudler(0.0))
-    );
-    m_gripperPitch.setDefaultCommand(
-      new RunCommand(() -> m_gripperPitch.moveWristPitch(m_operatorController.getRawAxis(3) * -0.25), m_gripperPitch).andThen(() -> m_gripperPitch.moveWristPitch(0.0))
-    );
+    m_shoulder.setDefaultCommand(new GodCommand(m_shoulder, m_gripperPitch, m_armExtension));
+    //m_gripperPitch.setDefaultCommand(
+    //  new RunCommand(() -> m_gripperPitch.moveWristPitch(m_operatorController.getRawAxis(3) * -0.25), m_gripperPitch).andThen(() -> m_gripperPitch.moveWristPitch(0.0))
+    //);
 
     // Auto Options
     auto_chooser.setDefaultOption("OnlyAuto", new OnlyAuto(m_robotDrive));
@@ -107,13 +107,16 @@ public class RobotContainer {
         .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
     new JoystickButton(m_driverController, Button.kB.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
-    new JoystickButton(m_operatorController, 7)
-        .whileTrue(new RunCommand(()-> m_shoulder.moveShoulderToSetpoint(), m_shoulder));
 
+
+    // OPERATOR
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
     new JoystickButton(m_operatorController, 4)
         .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToSetPoint(), m_gripperPitch));
+
+    new JoystickButton(m_operatorController, 7)
+        .onTrue(new TestPos(m_shoulder, m_gripperPitch, m_armExtension));
     new JoystickButton(m_operatorController, 8)
         .onTrue(new TransportPosition(m_shoulder, m_gripperPitch, m_armExtension));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
