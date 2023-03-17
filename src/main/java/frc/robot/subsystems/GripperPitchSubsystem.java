@@ -56,13 +56,13 @@ public class GripperPitchSubsystem extends SubsystemBase {
     gripperPitchPos = gripperPitchTab.add("Gripper Pitch Pos", getWristPitchPos()).getEntry();
 
     wristPitchPID = rightWristPitch.getPIDController();
-    wristPitchPID.setP(ArmConstants.kShoulderP);
+    wristPitchPID.setP(ArmConstants.kWristPitchP);
     gripperPitchP = gripperPitchTab.add("GripperWP", wristPitchPID.getP()).getEntry();
-    wristPitchPID.setI(ArmConstants.kShoulderI);
+    wristPitchPID.setI(ArmConstants.kWristPitchI);
     gripperPitchI = gripperPitchTab.add("GripperWI", wristPitchPID.getI()).getEntry();
-    wristPitchPID.setD(ArmConstants.kShoulderD);
+    wristPitchPID.setD(ArmConstants.kWristPitchD);
     gripperPitchD = gripperPitchTab.add("GripperWD", wristPitchPID.getD()).getEntry();
-    wristPitchPID.setFF(ArmConstants.kShoulderFF);
+    wristPitchPID.setFF(ArmConstants.kWristPitchFF);
     gripperPitchFF = gripperPitchTab.add("GripperWFF", wristPitchPID.getFF()).getEntry();
 
     rightWristPitch.burnFlash();

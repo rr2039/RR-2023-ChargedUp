@@ -90,7 +90,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   }
 
   public double getExtendyGirlPos() {
-    return extendyGirlEnc.getPosition();
+    return extendyGirlEnc.getPosition() * -1;
   }
 
   @Override

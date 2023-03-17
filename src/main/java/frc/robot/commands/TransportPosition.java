@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 
@@ -12,13 +14,15 @@ public class TransportPosition extends CommandBase {
 
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
+  ArmExtensionSubsystem arm;
 
   /** Creates a new TransportPosition. */
-  public TransportPosition(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch) {
+  public TransportPosition(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
     shoulder = m_shoulder;
     gripper = m_gripperPitch;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shoulder, m_gripperPitch);
+    arm = m_arm;
+   // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_shoulder, m_gripperPitch, m_arm);
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +32,13 @@ public class TransportPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.moveShoulderToPosition(0);
+    //double armArbFF = 0;
+    double armArbFF = Math.sin(Math.toRadians(shoulder.getShoulderPos()))
+                        * ((ArmConstants.kShoulderGravity 
+                        + (arm.getExtendyBoyPos() * ArmConstants.kShoulderStage1) 
+                        + (arm.getExtendyGirlPos() * ArmConstants.kShoulderStage2)));
+    System.out.println(armArbFF);
+    shoulder.moveShoulderToPosition(90, armArbFF);
     gripper.moveWristPitchToPos(0);
   }
 

@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.autonomous.DefaultAuto;
+import frc.robot.autonomous.NoMove;
+import frc.robot.autonomous.OnlyAuto;
+import frc.robot.autonomous.OnlyAutoBottom;
 import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
@@ -76,12 +79,13 @@ public class RobotContainer {
       new RunCommand(() -> m_shoulder.moveShoudler(m_operatorController.getRawAxis(1) * 0.25), m_shoulder).andThen(() -> m_shoulder.moveShoudler(0.0))
     );
     m_gripperPitch.setDefaultCommand(
-      new RunCommand(() -> m_gripperPitch.moveWristPitch(m_operatorController.getRawAxis(3) * 0.25), m_gripperPitch).andThen(() -> m_gripperPitch.moveWristPitch(0.0))
+      new RunCommand(() -> m_gripperPitch.moveWristPitch(m_operatorController.getRawAxis(3) * -0.25), m_gripperPitch).andThen(() -> m_gripperPitch.moveWristPitch(0.0))
     );
 
     // Auto Options
-    auto_chooser.setDefaultOption("TestAuto", new TestAuto(m_robotDrive));
-    auto_chooser.addOption("DefaultAuto", new DefaultAuto(m_robotDrive));
+    auto_chooser.setDefaultOption("OnlyAuto", new OnlyAuto(m_robotDrive));
+    auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
+    auto_chooser.addOption("OnlyAutoBottom", new OnlyAutoBottom(m_robotDrive));
     SmartDashboard.putData("Auto Chooser", auto_chooser);
   }
 
@@ -111,7 +115,7 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, 4)
         .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToSetPoint(), m_gripperPitch));
     new JoystickButton(m_operatorController, 8)
-        .onTrue(new TransportPosition(m_shoulder, m_gripperPitch));
+        .onTrue(new TransportPosition(m_shoulder, m_gripperPitch, m_armExtension));
     Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);

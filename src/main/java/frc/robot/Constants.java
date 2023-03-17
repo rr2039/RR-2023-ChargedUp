@@ -58,6 +58,9 @@ public final class Constants {
     public static final double kShoulderI = 0;
     public static final double kShoulderD = 0;
     public static final double kShoulderFF = 0;
+    public static final double kShoulderGravity = -0.96;
+    public static final double kShoulderStage1 = -0.01;
+    public static final double kShoulderStage2 = -0.01;
 
     public static final double kWristPitchP = 0.1;
     public static final double kWristPitchI = 0;
