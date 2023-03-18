@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.PresetPositions;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
@@ -10,14 +10,14 @@ import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 
-public class TransportPosition extends CommandBase {
+public class MediumScore extends CommandBase {
 
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
   ArmExtensionSubsystem arm;
 
-  /** Creates a new TransportPosition. */
-  public TransportPosition(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
+  /** Creates a new MediumScore. */
+  public MediumScore(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
     shoulder = m_shoulder;
     gripper = m_gripperPitch;
     arm = m_arm;

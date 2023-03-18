@@ -20,8 +20,11 @@ import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
 import frc.robot.commands.GodCommand;
 import frc.robot.commands.GripperRoll;
-import frc.robot.commands.TestPos;
-import frc.robot.commands.TransportPosition;
+
+// Preset Positions
+import frc.robot.commands.PresetPositions.TestPos;
+import frc.robot.commands.PresetPositions.TransportPosition;
+
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -112,14 +115,21 @@ public class RobotContainer {
     // OPERATOR
     new JoystickButton(m_operatorController, 1)
         .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
-    new JoystickButton(m_operatorController, 4)
-        .whileTrue(new RunCommand(() -> m_gripperPitch.moveWristPitchToSetPoint(), m_gripperPitch));
 
+    // OPERATOR SET POSITIONS
+    // Test Pos
     new JoystickButton(m_operatorController, 7)
         .onTrue(new TestPos(m_shoulder, m_gripperPitch, m_armExtension));
-    new JoystickButton(m_operatorController, 8)
+    // Transport Pos
+    new JoystickButton(m_operatorController, 1)
         .onTrue(new TransportPosition(m_shoulder, m_gripperPitch, m_armExtension));
-    Trigger DpadRight = new POVButton(m_operatorController, 90);
+    // High Pos
+    // Med Pos
+    // Low Pose
+    // Floor Pickup
+    // Human Pickup
+    
+    /*Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
     DpadLeft.onTrue(new GripperRoll(m_gripperRoll, -0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
@@ -130,7 +140,7 @@ public class RobotContainer {
     Trigger LeftBumper = new JoystickButton(m_operatorController, 5);
     LeftBumper.onTrue(new ArmExtension(m_armExtension, -0.25)).onFalse(new ArmExtension(m_armExtension, 0));
     Trigger RightBumper = new JoystickButton(m_operatorController, 6);
-    RightBumper.onTrue(new ArmExtension(m_armExtension, 0.25)).onFalse(new ArmExtension(m_armExtension, 0));
+    RightBumper.onTrue(new ArmExtension(m_armExtension, 0.25)).onFalse(new ArmExtension(m_armExtension, 0));*/
   }
 
   /**
