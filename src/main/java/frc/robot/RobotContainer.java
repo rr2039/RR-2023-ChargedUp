@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
+import frc.robot.autonomous.CubeBottom;
+import frc.robot.autonomous.CubeMidBottom;
+import frc.robot.autonomous.CubeTop;
 import frc.robot.autonomous.DefaultAuto;
 import frc.robot.autonomous.NoMove;
 import frc.robot.autonomous.OnlyAuto;
@@ -20,7 +23,11 @@ import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ArmExtension;
 import frc.robot.commands.GodCommand;
 import frc.robot.commands.GripperRoll;
-
+import frc.robot.commands.PresetPositions.FloorPickup;
+import frc.robot.commands.PresetPositions.HighScore;
+import frc.robot.commands.PresetPositions.HumanPlayer;
+import frc.robot.commands.PresetPositions.LowScore;
+import frc.robot.commands.PresetPositions.MediumScore;
 // Preset Positions
 import frc.robot.commands.PresetPositions.TestPos;
 import frc.robot.commands.PresetPositions.TransportPosition;
@@ -89,6 +96,9 @@ public class RobotContainer {
     auto_chooser.setDefaultOption("OnlyAuto", new OnlyAuto(m_robotDrive));
     auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
     auto_chooser.addOption("OnlyAutoBottom", new OnlyAutoBottom(m_robotDrive));
+    auto_chooser.addOption("CubeTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    auto_chooser.addOption("CubeBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    auto_chooser.addOption("CubeMidBottom", new CubeMidBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
     SmartDashboard.putData("Auto Chooser", auto_chooser);
   }
 
@@ -113,8 +123,8 @@ public class RobotContainer {
 
 
     // OPERATOR
-    new JoystickButton(m_operatorController, 1)
-        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
+    new JoystickButton(m_operatorController, 8)
+        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.softClose()));
 
     // OPERATOR SET POSITIONS
     // Test Pos
@@ -124,16 +134,26 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, 1)
         .onTrue(new TransportPosition(m_shoulder, m_gripperPitch, m_armExtension));
     // High Pos
+    new JoystickButton(m_operatorController, 4)
+        .onTrue(new HighScore(m_shoulder, m_gripperPitch, m_armExtension));
     // Med Pos
+    new JoystickButton(m_operatorController, 3)
+        .onTrue(new MediumScore(m_shoulder, m_gripperPitch, m_armExtension));
     // Low Pose
+    new JoystickButton(m_operatorController, 2)
+        .onTrue(new LowScore(m_shoulder, m_gripperPitch, m_armExtension));
     // Floor Pickup
+    Trigger DpadDown = new POVButton(m_operatorController, 180);
+    DpadDown.onTrue(new FloorPickup(m_shoulder, m_gripperPitch, m_armExtension));
     // Human Pickup
+    Trigger DpadUp = new POVButton(m_operatorController, 0);
+    DpadUp.onTrue(new HumanPlayer(m_shoulder, m_gripperPitch, m_armExtension));
     
-    /*Trigger DpadRight = new POVButton(m_operatorController, 90);
+    Trigger DpadRight = new POVButton(m_operatorController, 90);
     DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
     Trigger DpadLeft = new POVButton(m_operatorController, 270);
     DpadLeft.onTrue(new GripperRoll(m_gripperRoll, -0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
-    Trigger DpadUp = new POVButton(m_operatorController, 0);
+    /*Trigger DpadUp = new POVButton(m_operatorController, 0);
     DpadUp.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(-0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));
     Trigger DpadDown = new POVButton(m_operatorController, 180);
     DpadDown.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));

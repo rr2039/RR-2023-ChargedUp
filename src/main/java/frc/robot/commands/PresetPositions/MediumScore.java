@@ -22,7 +22,7 @@ public class MediumScore extends CommandBase {
     gripper = m_gripperPitch;
     arm = m_arm;
    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shoulder, m_gripperPitch, m_arm);
+    //addRequirements(m_shoulder, m_gripperPitch, m_arm);
   }
 
   // Called when the command is initially scheduled.
@@ -32,10 +32,10 @@ public class MediumScore extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(0);
-    gripper.setWristCurSetpoint(0);
-    arm.setExtendyBoyCurSetpoint(0);
-    arm.setExtendyGirlCurSetpoint(0);
+    shoulder.setShoulderCurSetpoint(60);
+    gripper.setWristCurSetpoint(-17);
+    arm.setExtendyBoyCurSetpoint(5);
+    arm.setExtendyGirlCurSetpoint(-5);
   }
 
   // Called once the command ends or is interrupted.

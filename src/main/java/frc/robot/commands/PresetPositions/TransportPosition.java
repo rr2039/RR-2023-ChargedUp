@@ -22,7 +22,7 @@ public class TransportPosition extends CommandBase {
     gripper = m_gripperPitch;
     arm = m_arm;
    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shoulder, m_gripperPitch, m_arm);
+    //addRequirements(m_shoulder, m_gripperPitch, m_arm);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +33,7 @@ public class TransportPosition extends CommandBase {
   @Override
   public void execute() {
     shoulder.setShoulderCurSetpoint(0);
-    gripper.setWristCurSetpoint(0);
+    gripper.setWristCurSetpoint(-16);
     arm.setExtendyBoyCurSetpoint(0);
     arm.setExtendyGirlCurSetpoint(0);
   }

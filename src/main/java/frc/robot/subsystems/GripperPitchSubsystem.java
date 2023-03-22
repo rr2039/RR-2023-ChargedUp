@@ -26,7 +26,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
   SparkMaxPIDController wristPitchPID;
 
-  double wristCurSetpoint = 0;
+  double wristCurSetpoint = -16;
 
   ShuffleboardTab gripperPitchTab = Shuffleboard.getTab("Arm");
   GenericEntry gripperPitchPos;
@@ -48,7 +48,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
     rightWristPitch.setSoftLimit(SoftLimitDirection.kForward, 30);
     rightWristPitch.setSoftLimit(SoftLimitDirection.kReverse, -40);
 
-    rightWristPitch.setClosedLoopRampRate(0.5);
+    rightWristPitch.setClosedLoopRampRate(0.1);
 
     leftWristPitch.follow(rightWristPitch, true);
 
@@ -56,7 +56,8 @@ public class GripperPitchSubsystem extends SubsystemBase {
     leftWristPitch.setIdleMode(IdleMode.kBrake);
 
     wristPitchEnc = rightWristPitch.getEncoder();
-    wristPitchEnc.setPosition(0);
+    //wristPitchEnc.setPositionConversionFactor(1.719);
+    wristPitchEnc.setPosition(-16);
     gripperPitchPos = gripperPitchTab.add("Gripper Pitch Pos", getWristPitchPos()).getEntry();
 
     wristPitchPID = rightWristPitch.getPIDController();

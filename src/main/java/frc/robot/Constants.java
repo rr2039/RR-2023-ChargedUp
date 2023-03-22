@@ -62,17 +62,17 @@ public final class Constants {
     public static final double kShoulderStage1 = 0.0;
     public static final double kShoulderStage2 = 0.0;
 
-    public static final double kWristPitchP = 0.05;
+    public static final double kWristPitchP = 0.025;
     public static final double kWristPitchI = 0;
     public static final double kWristPitchD = 0;
-    public static final double kWristPitchFF = 0.01;
+    public static final double kWristPitchFF = 0;
 
-    public static final double kBoysP = 0.025;
+    public static final double kBoysP = 0.12;
     public static final double kBoysI = 0;
     public static final double kBoysD = 0;
     public static final double kBoysFF = 0;
 
-    public static final double kGirlsP = 0.01725;
+    public static final double kGirlsP = 0.052;
     public static final double kGirlsI = 0;
     public static final double kGirlsD = 0;
     public static final double kGirlsFF = 0;

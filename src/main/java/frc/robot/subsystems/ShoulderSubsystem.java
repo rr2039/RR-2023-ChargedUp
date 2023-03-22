@@ -60,7 +60,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     leftShoulder.setIdleMode(IdleMode.kBrake);
     
     shoulderEnc = rightShoulder.getEncoder();
-    shoulderEnc.setPositionConversionFactor(2.482);
+    shoulderEnc.setPositionConversionFactor(2.4);
     shoulderEnc.setPosition(0);
     shoulderPos = shoulderTab.add("ShoulderPos", getShoulderPos()).getEntry();
 

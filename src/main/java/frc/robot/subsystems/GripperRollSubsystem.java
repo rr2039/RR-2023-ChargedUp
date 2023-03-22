@@ -33,6 +33,7 @@ public class GripperRollSubsystem extends SubsystemBase {
     wristRoll.setIdleMode(IdleMode.kBrake);
 
     wristRollEnc = wristRoll.getEncoder();
+    wristRollEnc.setPositionConversionFactor(1.719);
 
     wristRollPID = wristRoll.getPIDController();
 

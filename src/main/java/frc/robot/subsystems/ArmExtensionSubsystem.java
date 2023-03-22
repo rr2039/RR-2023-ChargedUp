@@ -67,6 +67,8 @@ public class ArmExtensionSubsystem extends SubsystemBase {
 
     extendyGirlEnc = rightExtendyGirl.getEncoder();
     extendyBoyEnc = rightExtendyBoy.getEncoder();
+    extendyGirlEnc.setPositionConversionFactor(0.08858);
+    extendyBoyEnc.setPositionConversionFactor(0.08858);
     extendyBoyEnc.setPosition(0);
     extendyGirlEnc.setPosition(0);
     extendyBoyPos = armExtensionTab.add("Extendy Boy Pos", getExtendyBoyPos()).getEntry();
