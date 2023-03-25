@@ -31,10 +31,17 @@ public class MediumScore extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(60);
-    gripper.setWristCurSetpoint(-17);
-    arm.setExtendyBoyCurSetpoint(5);
-    arm.setExtendyGirlCurSetpoint(5);
+    if (shoulder.getScoreMode() == 1) {
+      shoulder.setShoulderCurSetpoint(60);
+      gripper.setWristCurSetpoint(-17);
+      arm.setExtendyBoyCurSetpoint(5);
+      arm.setExtendyGirlCurSetpoint(5);
+    } else {
+      shoulder.setShoulderCurSetpoint(60);
+      gripper.setWristCurSetpoint(-17);
+      arm.setExtendyBoyCurSetpoint(5);
+      arm.setExtendyGirlCurSetpoint(5);
+    }
   }
 
   // Called once the command ends or is interrupted.

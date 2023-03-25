@@ -36,6 +36,8 @@ public class ShoulderSubsystem extends SubsystemBase {
   GenericEntry shoulderI;
   GenericEntry shoulderD;
   GenericEntry shoulderFF;
+
+  int scoreMode = 1;
   
   /** Creates a new ArmSubsystem. */
   public ShoulderSubsystem() {
@@ -78,6 +80,14 @@ public class ShoulderSubsystem extends SubsystemBase {
     leftShoulder.burnFlash();
 
     shoulderSetpoint = shoulderTab.add("ShoulderSetpoint", 0).getEntry();
+  }
+
+  public void setScoreMode(int mode) {
+    scoreMode = mode;
+  }
+
+  public int getScoreMode() {
+    return scoreMode;
   }
 
   public double getShoulderCurSetpoint() {

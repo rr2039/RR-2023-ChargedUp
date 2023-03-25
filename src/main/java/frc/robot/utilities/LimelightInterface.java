@@ -70,10 +70,10 @@ public class LimelightInterface extends SubsystemBase {
       llBotField.setRobotPose(botpose);
       SmartDashboard.putNumber("AprilTagID", aprilTagId);
       SmartDashboard.putBoolean("HasTarget", hasTarget);
-      SmartDashboard.putString("AprilTagPosRelBot", aprilTagPosRelRobot.toString());
-      SmartDashboard.putData("AprilTagFieldPos", aprilTagField);
-      SmartDashboard.putString("LLBotPose", botpose.toString());
-      SmartDashboard.putData("LLBotPoseFieldPos", llBotField);
+      //SmartDashboard.putString("AprilTagPosRelBot", aprilTagPosRelRobot.toString());
+      //SmartDashboard.putData("AprilTagFieldPos", aprilTagField);
+      //SmartDashboard.putString("LLBotPose", botpose.toString());
+      //SmartDashboard.putData("LLBotPoseFieldPos", llBotField);
       if ((aprilTagPosRelRobot.getX() < LimelightConstants.limelightDetectionDistance 
               && aprilTagPosRelRobot.getX() > -LimelightConstants.limelightDetectionDistance) 
               && (aprilTagPosRelRobot.getY() < LimelightConstants.limelightDetectionDistance 

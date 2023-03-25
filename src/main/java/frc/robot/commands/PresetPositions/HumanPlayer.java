@@ -31,10 +31,17 @@ public class HumanPlayer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(32);
-    gripper.setWristCurSetpoint(-26);
-    arm.setExtendyBoyCurSetpoint(0);
-    arm.setExtendyGirlCurSetpoint(0);
+    if (shoulder.getScoreMode() == 1) {
+      shoulder.setShoulderCurSetpoint(32);
+      gripper.setWristCurSetpoint(-26);
+      arm.setExtendyBoyCurSetpoint(0);
+      arm.setExtendyGirlCurSetpoint(0);
+    } else {
+      shoulder.setShoulderCurSetpoint(32);
+      gripper.setWristCurSetpoint(-26);
+      arm.setExtendyBoyCurSetpoint(0);
+      arm.setExtendyGirlCurSetpoint(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

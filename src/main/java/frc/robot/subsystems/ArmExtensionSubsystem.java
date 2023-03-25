@@ -112,11 +112,15 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   }
 
   public void moveExtendyGirlsToPos(double pos, double arbFF) {
-    extendyGirlPID.setReference(pos, ControlType.kPosition, 0, arbFF);
+    if (pos >= -1) {
+      extendyGirlPID.setReference(pos, ControlType.kPosition, 0, arbFF);
+    }
   }
 
   public void moveExtendyBoysToPos(double pos, double arbFF) {
-    extendyBoyPID.setReference(pos, ControlType.kPosition, 0, arbFF);
+    if (pos >= -1) {
+      extendyBoyPID.setReference(pos, ControlType.kPosition, 0, arbFF);
+    }
   }
 
   public void moveExtendyGirls(double speed) {

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.PresetPositions.TransportPosition;
@@ -17,6 +18,7 @@ public class GodCommand extends CommandBase {
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
   ArmExtensionSubsystem arm;
+  GenericHID operatorContoller;
 
   SlewRateLimiter boySlew = new SlewRateLimiter(8);
   SlewRateLimiter girlSlew = new SlewRateLimiter(8);
@@ -24,10 +26,11 @@ public class GodCommand extends CommandBase {
   SlewRateLimiter shoulderSlew = new SlewRateLimiter(270);
   
   /** Creates a new GodCommand. */
-  public GodCommand(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
+  public GodCommand(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm, GenericHID m_operatorController) {
     shoulder = m_shoulder;
     gripper = m_gripperPitch;
     arm = m_arm;
+    operatorContoller = m_operatorController;
    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_shoulder, m_gripperPitch, m_arm);
   }
@@ -44,6 +47,23 @@ public class GodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Manual Controls?
+    if (operatorContoller.getRawButtonPressed(5)) {
+      arm.setExtendyBoyCurSetpoint(arm.getExtendyBoyCurSetpoint() - 0.5);
+      arm.setExtendyGirlCurSetpoint(arm.getExtendyGirlCurSetpoint() - 0.5);
+    }
+    if (operatorContoller.getRawButtonPressed(6)) {
+      arm.setExtendyBoyCurSetpoint(arm.getExtendyBoyCurSetpoint() + 0.5);
+      arm.setExtendyGirlCurSetpoint(arm.getExtendyGirlCurSetpoint() + 0.5);
+    }
+    if (Math.abs(operatorContoller.getRawAxis(3)) > 0.5) {
+      gripper.setWristCurSetpoint(gripper.getWristCurSetpoint() + (operatorContoller.getRawAxis(3) > 0 ? 5 : -5));
+    }
+    if (Math.abs(operatorContoller.getRawAxis(1)) > 0.5) {
+      shoulder.setShoulderCurSetpoint(shoulder.getShoulderCurSetpoint() + (operatorContoller.getRawAxis(3) > 0 ? 5 : -5));
+    }
+
     double shoulderArbFF = Math.sin(Math.toRadians(shoulder.getShoulderPos()))
                         * ((ArmConstants.kShoulderGravity 
                         + (arm.getExtendyBoyPos() * ArmConstants.kShoulderStage1) 

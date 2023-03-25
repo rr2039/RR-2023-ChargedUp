@@ -31,10 +31,17 @@ public class HighScore extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(60);
-    gripper.setWristCurSetpoint(0);
-    arm.setExtendyBoyCurSetpoint(8);
-    arm.setExtendyGirlCurSetpoint(12);
+    if (shoulder.getScoreMode() == 1) {
+      shoulder.setShoulderCurSetpoint(60);
+      gripper.setWristCurSetpoint(0);
+      arm.setExtendyBoyCurSetpoint(8);
+      arm.setExtendyGirlCurSetpoint(12);
+    } else {
+      shoulder.setShoulderCurSetpoint(60);
+      gripper.setWristCurSetpoint(0);
+      arm.setExtendyBoyCurSetpoint(8);
+      arm.setExtendyGirlCurSetpoint(12);
+    }
   }
 
   // Called once the command ends or is interrupted.

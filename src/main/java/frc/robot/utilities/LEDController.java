@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
@@ -27,6 +26,10 @@ public class LEDController extends SubsystemBase {
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
     m_led.start();
+  }
+
+  public void setGamePiece(int piece) {
+    gamePiece = (piece == 1 ? Color.kPurple : Color.kYellow);
   }
 
   private void halvsies() {
