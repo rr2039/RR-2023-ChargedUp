@@ -30,8 +30,8 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   SparkMaxPIDController extendyGirlPID;
   SparkMaxPIDController extendyBoyPID;
 
-  double extendyGirlCurSetpoint = 0;
-  double extendyBoyCurSetpoint = 0;
+  double extendyGirlCurSetpoint = ArmConstants.kExtendyGirlStartPoint;
+  double extendyBoyCurSetpoint = ArmConstants.kExtendyBoyStartPoint;
 
   // Shuffleboard Tab for Shoulder Updates
   ShuffleboardTab armExtensionTab = Shuffleboard.getTab("Arm");
@@ -51,8 +51,10 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     leftExtendyBoy.restoreFactoryDefaults();
     rightExtendyBoy.restoreFactoryDefaults();
 
-    rightExtendyGirl.setClosedLoopRampRate(3.5);
-    rightExtendyBoy.setClosedLoopRampRate(3.5);
+    rightExtendyGirl.setInverted(false);
+
+    //rightExtendyGirl.setClosedLoopRampRate(3.5);
+    //rightExtendyBoy.setClosedLoopRampRate(3.5);
 
     //rightExtendyBoy.setSmartCurrentLimit(10, 40);
     //rightExtendyGirl.setSmartCurrentLimit(10, 40);
@@ -67,23 +69,24 @@ public class ArmExtensionSubsystem extends SubsystemBase {
 
     extendyGirlEnc = rightExtendyGirl.getEncoder();
     extendyBoyEnc = rightExtendyBoy.getEncoder();
-    extendyGirlEnc.setPositionConversionFactor(0.08858);
-    extendyBoyEnc.setPositionConversionFactor(0.08858);
-    extendyBoyEnc.setPosition(0);
-    extendyGirlEnc.setPosition(0);
+    // Old Factor 0.08858
+    extendyGirlEnc.setPositionConversionFactor(0.111666);
+    extendyBoyEnc.setPositionConversionFactor(0.111666);
+    extendyBoyEnc.setPosition(ArmConstants.kExtendyBoyStartPoint);
+    extendyGirlEnc.setPosition(ArmConstants.kExtendyGirlStartPoint);
     extendyBoyPos = armExtensionTab.add("Extendy Boy Pos", getExtendyBoyPos()).getEntry();
     extendyGirlPos = armExtensionTab.add("Extendy Girl Pos", getExtendyGirlPos()).getEntry();
 
     extendyGirlPID = rightExtendyGirl.getPIDController();
-    extendyGirlPID.setP(ArmConstants.kGirlsP);
-    extendyGirlPID.setI(ArmConstants.kGirlsI);
-    extendyGirlPID.setD(ArmConstants.kGirlsD);
-    extendyGirlPID.setFF(ArmConstants.kGirlsFF);
+    extendyGirlPID.setP(ArmConstants.kGirlsP, 0);
+    extendyGirlPID.setI(ArmConstants.kGirlsI, 0);
+    extendyGirlPID.setD(ArmConstants.kGirlsD, 0);
+    extendyGirlPID.setFF(ArmConstants.kGirlsFF, 0);
     extendyBoyPID = rightExtendyBoy.getPIDController();
-    extendyBoyPID.setP(ArmConstants.kBoysP);
-    extendyBoyPID.setI(ArmConstants.kBoysI);
-    extendyBoyPID.setD(ArmConstants.kBoysD);
-    extendyBoyPID.setFF(ArmConstants.kBoysFF);
+    extendyBoyPID.setP(ArmConstants.kBoysP, 0);
+    extendyBoyPID.setI(ArmConstants.kBoysI, 0);
+    extendyBoyPID.setD(ArmConstants.kBoysD, 0);
+    extendyBoyPID.setFF(ArmConstants.kBoysFF, 0);
 
     rightExtendyGirl.burnFlash();
     leftExtendyGirl.burnFlash();
@@ -108,12 +111,12 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     extendyGirlCurSetpoint = setpoint;
   }
 
-  public void moveExtendyGirlsToPos(double pos) {
-    extendyGirlPID.setReference(pos, ControlType.kPosition);
+  public void moveExtendyGirlsToPos(double pos, double arbFF) {
+    extendyGirlPID.setReference(pos, ControlType.kPosition, 0, arbFF);
   }
 
-  public void moveExtendyBoysToPos(double pos) {
-    extendyBoyPID.setReference(pos, ControlType.kPosition);
+  public void moveExtendyBoysToPos(double pos, double arbFF) {
+    extendyBoyPID.setReference(pos, ControlType.kPosition, 0, arbFF);
   }
 
   public void moveExtendyGirls(double speed) {
@@ -134,7 +137,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   }
 
   public double getExtendyGirlPos() {
-    return extendyGirlEnc.getPosition() * -1;
+    return extendyGirlEnc.getPosition();
   }
 
   @Override

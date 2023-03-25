@@ -4,7 +4,6 @@
 
 package frc.robot.autonomous;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.pathplanner.lib.PathPlanner;

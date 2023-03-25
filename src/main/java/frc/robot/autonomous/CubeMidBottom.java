@@ -4,7 +4,6 @@
 
 package frc.robot.autonomous;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.pathplanner.lib.PathPlanner;
@@ -14,13 +13,10 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.PathConstraints;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.GodCommand;
-import frc.robot.commands.PresetPositions.LowScore;
 import frc.robot.commands.PresetPositions.MediumScore;
 import frc.robot.commands.PresetPositions.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;

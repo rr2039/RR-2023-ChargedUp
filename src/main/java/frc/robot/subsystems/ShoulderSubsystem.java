@@ -27,7 +27,7 @@ public class ShoulderSubsystem extends SubsystemBase {
 
   SparkMaxPIDController shoulderPID;
 
-  double shoulderCurSetpoint = 0;
+  double shoulderCurSetpoint = ArmConstants.kShoulderStartPoint;
 
   ShuffleboardTab shoulderTab = Shuffleboard.getTab("Arm");
   GenericEntry shoulderPos;
@@ -52,7 +52,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     rightShoulder.setSoftLimit(SoftLimitDirection.kForward, 40);
     rightShoulder.setSoftLimit(SoftLimitDirection.kReverse, -40);
 
-    rightShoulder.setClosedLoopRampRate(1.0);
+    //rightShoulder.setClosedLoopRampRate(1.0);
 
     leftShoulder.follow(rightShoulder, true);
 

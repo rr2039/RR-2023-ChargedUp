@@ -5,7 +5,6 @@
 package frc.robot.commands.PresetPositions;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -35,7 +34,7 @@ public class MediumScore extends CommandBase {
     shoulder.setShoulderCurSetpoint(60);
     gripper.setWristCurSetpoint(-17);
     arm.setExtendyBoyCurSetpoint(5);
-    arm.setExtendyGirlCurSetpoint(-5);
+    arm.setExtendyGirlCurSetpoint(5);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,8 +4,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.PresetPositions.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -15,6 +17,11 @@ public class GodCommand extends CommandBase {
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
   ArmExtensionSubsystem arm;
+
+  SlewRateLimiter boySlew = new SlewRateLimiter(8);
+  SlewRateLimiter girlSlew = new SlewRateLimiter(8);
+  SlewRateLimiter wristSlew = new SlewRateLimiter(20);
+  SlewRateLimiter shoulderSlew = new SlewRateLimiter(270);
   
   /** Creates a new GodCommand. */
   public GodCommand(ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripperPitch, ArmExtensionSubsystem m_arm) {
@@ -27,19 +34,40 @@ public class GodCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    boySlew.calculate(-1);
+    girlSlew.calculate(-1);
+    shoulderSlew.calculate(0);
+    new TransportPosition(shoulder, gripper, arm).execute();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double armArbFF = Math.sin(Math.toRadians(shoulder.getShoulderPos()))
+    double shoulderArbFF = Math.sin(Math.toRadians(shoulder.getShoulderPos()))
                         * ((ArmConstants.kShoulderGravity 
                         + (arm.getExtendyBoyPos() * ArmConstants.kShoulderStage1) 
                         + (arm.getExtendyGirlPos() * ArmConstants.kShoulderStage2)));
-    shoulder.moveShoulderToPosition(shoulder.getShoulderCurSetpoint(), armArbFF);
-    gripper.moveWristPitchToPos(gripper.getWristCurSetpoint());
-    arm.moveExtendyBoysToPos(arm.getExtendyBoyCurSetpoint());
-    arm.moveExtendyGirlsToPos(arm.getExtendyGirlCurSetpoint());
+    double boysVelocity;
+    if (Math.abs(arm.getExtendyBoyCurSetpoint() - arm.getExtendyBoyPos()) < 0.125) {
+      boysVelocity = 0;
+    } else {
+      boysVelocity = arm.getExtendyBoyCurSetpoint() - arm.getExtendyBoyPos() > 0 ? 1 : -1;
+    }
+    double girlsVelocity;
+    if (Math.abs(arm.getExtendyGirlCurSetpoint() - arm.getExtendyGirlPos()) < 0.125) {
+      girlsVelocity = 0;
+    } else {
+      girlsVelocity = arm.getExtendyGirlCurSetpoint() - arm.getExtendyGirlPos() > 0 ? 1 : -1;
+    }
+    double boysArbFF = (Math.cos(Math.toRadians(shoulder.getShoulderPos())) * 0.2) 
+                          + (Math.signum(boysVelocity) * 0.5);
+    double girlsArbFF = (Math.cos(Math.toRadians(shoulder.getShoulderPos())) * 0.1) 
+                          + (Math.signum(girlsVelocity) * 0.3);
+    shoulder.moveShoulderToPosition(shoulderSlew.calculate(shoulder.getShoulderCurSetpoint()), shoulderArbFF);
+    gripper.moveWristPitchToPos(wristSlew.calculate(gripper.getWristCurSetpoint()));
+    arm.moveExtendyBoysToPos(boySlew.calculate(arm.getExtendyBoyCurSetpoint()), boysArbFF);
+    arm.moveExtendyGirlsToPos(girlSlew.calculate(arm.getExtendyGirlCurSetpoint()), girlsArbFF);
   }
 
   // Called once the command ends or is interrupted.

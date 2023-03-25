@@ -5,7 +5,6 @@
 package frc.robot.commands.PresetPositions;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -32,10 +31,10 @@ public class HighScore extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulder.setShoulderCurSetpoint(45);
-    gripper.setWristCurSetpoint(-20);
-    arm.setExtendyBoyCurSetpoint(10);
-    arm.setExtendyGirlCurSetpoint(-10);
+    shoulder.setShoulderCurSetpoint(60);
+    gripper.setWristCurSetpoint(0);
+    arm.setExtendyBoyCurSetpoint(8);
+    arm.setExtendyGirlCurSetpoint(12);
   }
 
   // Called once the command ends or is interrupted.

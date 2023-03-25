@@ -67,15 +67,20 @@ public final class Constants {
     public static final double kWristPitchD = 0;
     public static final double kWristPitchFF = 0;
 
-    public static final double kBoysP = 0.12;
+    public static final double kBoysP = 0.6;
     public static final double kBoysI = 0;
     public static final double kBoysD = 0;
     public static final double kBoysFF = 0;
 
-    public static final double kGirlsP = 0.052;
+    public static final double kGirlsP = 0.4;
     public static final double kGirlsI = 0;
     public static final double kGirlsD = 0;
     public static final double kGirlsFF = 0;
+
+    public static final double kShoulderStartPoint = 0;
+    public static final double kExtendyBoyStartPoint = -1;
+    public static final double kExtendyGirlStartPoint = -1;
+    public static final double kWristStartPoint = -16;
   }
 
   public static final class DriveConstants {

@@ -14,21 +14,19 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.autonomous.CubeBottom;
 import frc.robot.autonomous.CubeMidBottom;
 import frc.robot.autonomous.CubeTop;
-import frc.robot.autonomous.DefaultAuto;
 import frc.robot.autonomous.NoMove;
 import frc.robot.autonomous.OnlyAuto;
 import frc.robot.autonomous.OnlyAutoBottom;
-import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.AlignToAprilTag;
-import frc.robot.commands.ArmExtension;
 import frc.robot.commands.GodCommand;
 import frc.robot.commands.GripperRoll;
+
+// Preset Positions
 import frc.robot.commands.PresetPositions.FloorPickup;
 import frc.robot.commands.PresetPositions.HighScore;
 import frc.robot.commands.PresetPositions.HumanPlayer;
 import frc.robot.commands.PresetPositions.LowScore;
 import frc.robot.commands.PresetPositions.MediumScore;
-// Preset Positions
 import frc.robot.commands.PresetPositions.TestPos;
 import frc.robot.commands.PresetPositions.TransportPosition;
 
@@ -38,6 +36,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.GripperRollSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utilities.LEDController;
 import frc.robot.utilities.LimelightInterface;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -60,7 +59,8 @@ public class RobotContainer {
   private final GripperPitchSubsystem m_gripperPitch = new GripperPitchSubsystem();
   private final GripperRollSubsystem m_gripperRoll = new GripperRollSubsystem();
   private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
-
+  private final LEDController m_led = new LEDController();
+  
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
