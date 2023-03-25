@@ -160,7 +160,7 @@ public class RobotContainer {
         .onTrue(new LowScore(m_shoulder, m_gripperPitch, m_armExtension));
     // Floor Pickup
     Trigger DpadDown = new POVButton(m_operatorController, 180);
-    DpadDown.onTrue(new FloorPickup(m_shoulder, m_gripperPitch, m_armExtension));
+    DpadDown.onTrue(new FloorPickup(m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
     // Human Pickup
     Trigger DpadUp = new POVButton(m_operatorController, 0);
     DpadUp.onTrue(new HumanPlayer(m_shoulder, m_gripperPitch, m_armExtension));
