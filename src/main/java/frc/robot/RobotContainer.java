@@ -50,6 +50,7 @@ import frc.robot.utilities.LimelightInterface;
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.AutoBalance;
 //import frc.robot.commands.AlignToAprilTag;
 import frc.robot.commands.ChangeScoreMode;
 import frc.robot.commands.GodCommand;
@@ -136,11 +137,13 @@ public class RobotContainer {
         .onTrue(new ChangeScoreMode(m_shoulder, m_led, 0));
     new JoystickButton(m_driverController, Button.kB.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
+    new JoystickButton(m_driverController, Button.kY.value)
+        .onTrue(new AutoBalance(m_robotDrive));
 
 
     // OPERATOR
     new JoystickButton(m_operatorController, 8)
-        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.softClose()));
+        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
 
     // OPERATOR SET POSITIONS
     // Test Pos

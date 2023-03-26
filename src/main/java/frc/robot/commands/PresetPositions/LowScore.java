@@ -32,13 +32,13 @@ public class LowScore extends CommandBase {
   @Override
   public void execute() {
     if (shoulder.getScoreMode() == 1) {
-      shoulder.setShoulderCurSetpoint(90);
-      gripper.setWristCurSetpoint(-20);
+      shoulder.setShoulderCurSetpoint(80);
+      gripper.setWristCurSetpoint(-28);
       arm.setExtendyBoyCurSetpoint(0);
       arm.setExtendyGirlCurSetpoint(0);
     } else {
       shoulder.setShoulderCurSetpoint(90);
-      gripper.setWristCurSetpoint(-20);
+      gripper.setWristCurSetpoint(0);
       arm.setExtendyBoyCurSetpoint(0);
       arm.setExtendyGirlCurSetpoint(0);
     }

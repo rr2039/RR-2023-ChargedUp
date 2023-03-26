@@ -104,11 +104,15 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   }
 
   public void setExtendyBoyCurSetpoint(double setpoint) {
-    extendyBoyCurSetpoint = setpoint;
+    if (setpoint >= -1) {
+      extendyBoyCurSetpoint = setpoint;
+    }
   }
 
   public void setExtendyGirlCurSetpoint(double setpoint) {
-    extendyGirlCurSetpoint = setpoint;
+    if (setpoint >= -1) {
+      extendyGirlCurSetpoint = setpoint;
+    }
   }
 
   public void moveExtendyGirlsToPos(double pos, double arbFF) {

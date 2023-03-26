@@ -32,13 +32,13 @@ public class MediumScore extends CommandBase {
   @Override
   public void execute() {
     if (shoulder.getScoreMode() == 1) {
-      shoulder.setShoulderCurSetpoint(60);
-      gripper.setWristCurSetpoint(-17);
+      shoulder.setShoulderCurSetpoint(70);
+      gripper.setWristCurSetpoint(-5);
       arm.setExtendyBoyCurSetpoint(5);
-      arm.setExtendyGirlCurSetpoint(5);
+      arm.setExtendyGirlCurSetpoint(6);
     } else {
       shoulder.setShoulderCurSetpoint(60);
-      gripper.setWristCurSetpoint(-17);
+      gripper.setWristCurSetpoint(0);
       arm.setExtendyBoyCurSetpoint(5);
       arm.setExtendyGirlCurSetpoint(5);
     }

@@ -35,8 +35,8 @@ public class FloorPickup extends CommandBase {
   @Override
   public void execute() {
     if (shoulder.getScoreMode() == 1) {
-      shoulder.setShoulderCurSetpoint(115);
-      gripper.setWristCurSetpoint(2.5);
+      shoulder.setShoulderCurSetpoint(120);
+      gripper.setWristCurSetpoint(11);
       arm.setExtendyBoyCurSetpoint(0);
       arm.setExtendyGirlCurSetpoint(0);
     } else {

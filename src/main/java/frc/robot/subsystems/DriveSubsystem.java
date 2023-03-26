@@ -72,6 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    m_gyro.setAngleAdjustment(90);
   }
 
   @Override
@@ -99,6 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
     SmartDashboard.putString("RobotPos", this.getPose().toString());
     SmartDashboard.putNumber("Heading", this.getHeading());
+    SmartDashboard.putNumber("Pitch", this.getPitch());
   }
 
   public void feedVisionToPose(Pose2d visionPose) {
@@ -221,6 +223,10 @@ public class DriveSubsystem extends SubsystemBase {
     //double temp = m_gyro.getAngle();
     //return temp * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public double getPitch() {
+    return m_gyro.getRoll() * -1;
   }
 
   /**

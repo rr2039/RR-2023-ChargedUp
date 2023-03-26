@@ -20,9 +20,9 @@ public class GodCommand extends CommandBase {
   ArmExtensionSubsystem arm;
   GenericHID operatorContoller;
 
-  SlewRateLimiter boySlew = new SlewRateLimiter(8);
-  SlewRateLimiter girlSlew = new SlewRateLimiter(8);
-  SlewRateLimiter wristSlew = new SlewRateLimiter(20);
+  SlewRateLimiter boySlew = new SlewRateLimiter(9);
+  SlewRateLimiter girlSlew = new SlewRateLimiter(9);
+  SlewRateLimiter wristSlew = new SlewRateLimiter(180);
   SlewRateLimiter shoulderSlew = new SlewRateLimiter(270);
   
   /** Creates a new GodCommand. */
@@ -49,19 +49,23 @@ public class GodCommand extends CommandBase {
   public void execute() {
 
     // Manual Controls?
+    // Move arm in
     if (operatorContoller.getRawButtonPressed(5)) {
       arm.setExtendyBoyCurSetpoint(arm.getExtendyBoyCurSetpoint() - 0.5);
       arm.setExtendyGirlCurSetpoint(arm.getExtendyGirlCurSetpoint() - 0.5);
     }
+    // Move arm out
     if (operatorContoller.getRawButtonPressed(6)) {
       arm.setExtendyBoyCurSetpoint(arm.getExtendyBoyCurSetpoint() + 0.5);
       arm.setExtendyGirlCurSetpoint(arm.getExtendyGirlCurSetpoint() + 0.5);
     }
+    // Move wrist
     if (Math.abs(operatorContoller.getRawAxis(3)) > 0.5) {
-      gripper.setWristCurSetpoint(gripper.getWristCurSetpoint() + (operatorContoller.getRawAxis(3) > 0 ? 5 : -5));
+      gripper.setWristCurSetpoint(gripper.getWristCurSetpoint() + (operatorContoller.getRawAxis(3) > 0 ? -1 : 1));
     }
+    // Move shoulder
     if (Math.abs(operatorContoller.getRawAxis(1)) > 0.5) {
-      shoulder.setShoulderCurSetpoint(shoulder.getShoulderCurSetpoint() + (operatorContoller.getRawAxis(3) > 0 ? 5 : -5));
+      shoulder.setShoulderCurSetpoint(shoulder.getShoulderCurSetpoint() + (operatorContoller.getRawAxis(1) > 0 ? 1 : -1));
     }
 
     double shoulderArbFF = Math.sin(Math.toRadians(shoulder.getShoulderPos()))

@@ -32,13 +32,13 @@ public class HighScore extends CommandBase {
   @Override
   public void execute() {
     if (shoulder.getScoreMode() == 1) {
-      shoulder.setShoulderCurSetpoint(60);
-      gripper.setWristCurSetpoint(0);
-      arm.setExtendyBoyCurSetpoint(8);
-      arm.setExtendyGirlCurSetpoint(12);
+      shoulder.setShoulderCurSetpoint(65);
+      gripper.setWristCurSetpoint(-10);
+      arm.setExtendyBoyCurSetpoint(10);
+      arm.setExtendyGirlCurSetpoint(18);
     } else {
       shoulder.setShoulderCurSetpoint(60);
-      gripper.setWristCurSetpoint(0);
+      gripper.setWristCurSetpoint(5);
       arm.setExtendyBoyCurSetpoint(8);
       arm.setExtendyGirlCurSetpoint(12);
     }
