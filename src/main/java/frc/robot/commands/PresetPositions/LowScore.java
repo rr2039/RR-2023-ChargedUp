@@ -37,8 +37,8 @@ public class LowScore extends CommandBase {
       arm.setExtendyBoyCurSetpoint(0);
       arm.setExtendyGirlCurSetpoint(0);
     } else {
-      shoulder.setShoulderCurSetpoint(90);
-      gripper.setWristCurSetpoint(0);
+      shoulder.setShoulderCurSetpoint(80);
+      gripper.setWristCurSetpoint(-28);
       arm.setExtendyBoyCurSetpoint(0);
       arm.setExtendyGirlCurSetpoint(0);
     }

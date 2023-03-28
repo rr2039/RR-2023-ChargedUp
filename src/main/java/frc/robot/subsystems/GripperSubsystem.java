@@ -12,7 +12,8 @@ public class GripperSubsystem extends SubsystemBase {
 
   PneumaticHub m_pH = new PneumaticHub(2);
   Solenoid primaryPistons;
-  Solenoid secondaryPistons; 
+  Solenoid secondaryPistons;
+  int currentState = 0;
 
   /** Creates a new GripperSubsystem. */
   public GripperSubsystem() {
@@ -20,19 +21,32 @@ public class GripperSubsystem extends SubsystemBase {
     secondaryPistons = m_pH.makeSolenoid(0);
   }
 
+  public void toggleClaw() {
+    if (currentState == 0) {
+      open();
+      currentState = 1;
+    } else if (currentState == 1) {
+      hardClose();
+      currentState = 0;
+    }
+  }
+
   public void open() {
     primaryPistons.set(true);
     secondaryPistons.set(false);
+    currentState = 1;
   }
 
   public void hardClose() {
     primaryPistons.set(false);
     secondaryPistons.set(true);
+    currentState = 0;
   }
 
   public void softClose() {
     primaryPistons.set(false);
     secondaryPistons.set(false);
+    currentState = 0;
   }
 
   @Override

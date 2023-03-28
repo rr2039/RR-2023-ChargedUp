@@ -55,6 +55,7 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ChangeScoreMode;
 import frc.robot.commands.GodCommand;
 import frc.robot.commands.GripperRoll;
+import frc.robot.commands.ToggleClaw;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -131,9 +132,9 @@ public class RobotContainer {
             m_robotDrive));
     //new JoystickButton(m_driverController, Button.kY.value)
     //    .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-        .onTrue(new ChangeScoreMode(m_shoulder, m_led, 1));
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        .onTrue(new ChangeScoreMode(m_shoulder, m_led, 1));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
         .onTrue(new ChangeScoreMode(m_shoulder, m_led, 0));
     new JoystickButton(m_driverController, Button.kB.value)
         .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
@@ -143,7 +144,7 @@ public class RobotContainer {
 
     // OPERATOR
     new JoystickButton(m_operatorController, 8)
-        .whileTrue(new RunCommand(() -> m_gripper.open())).onFalse(new RunCommand(() -> m_gripper.hardClose()));
+        .onTrue(new ToggleClaw(m_gripper));
 
     // OPERATOR SET POSITIONS
     // Test Pos

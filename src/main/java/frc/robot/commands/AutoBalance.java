@@ -12,11 +12,18 @@ public class AutoBalance extends CommandBase {
 
   DriveSubsystem drive;
   boolean climbing = false;
-  double fallAngle = 14.0;
+  double fallAngle = 10.0;
   double time = 0;
+  boolean direction = false;
   /** Creates a new AutoBalance. */
   public AutoBalance(DriveSubsystem m_drive) {
     drive = m_drive;
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  public AutoBalance(DriveSubsystem m_drive, boolean m_direction) {
+    drive = m_drive;
+    direction = m_direction;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,24 +32,31 @@ public class AutoBalance extends CommandBase {
   public void initialize() {
     climbing = false;
     time = 0;
+    //fallAngle = 13.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (drive.getPitch() > -fallAngle && drive.getPitch() < fallAngle && !climbing) {
-      drive.drive(-0.2, 0, 0, false);
-    } else if (drive.getPitch() > -fallAngle && drive.getPitch() < fallAngle && climbing) {
+    //if (drive.getPitch() > -fallAngle && drive.getPitch() < fallAngle && !climbing && time < 5) {
+    if (!climbing && time < 3) {
+      // Start moving
+      drive.drive((direction ? 0.2 : -0.2), 0, 0, false);
+    } else if (-fallAngle < drive.getPitch() && drive.getPitch() < fallAngle && climbing) {
+      // Stop moving
       drive.drive(0, 0, 0, false);
       drive.setX();
-    } else if ((drive.getPitch() < -fallAngle || drive.getPitch() > fallAngle) && !climbing && time > 500) {
+      //fallAngle -= 1;
+    } else if ((drive.getPitch() < -fallAngle || fallAngle < drive.getPitch()) && !climbing && time > 3) {
+      // Decide that were climbing
       climbing = true;
-    } else if (drive.getPitch() > fallAngle && climbing) {
-      drive.drive(drive.getPitch()/75, 0, 0, false);
-    } else if (drive.getPitch() < -fallAngle && climbing) {
-      drive.drive(drive.getPitch()/75, 0, 0, false);
+    } else if ((drive.getPitch() < -fallAngle || fallAngle < drive.getPitch()) && climbing) {
+      // Move direction to balance 
+      drive.drive(drive.getPitch()/150, 0, 0, false);
     }
-    time += 1;
+    if (time < 3) {
+      time += 0.02;
+    }
   }
 
   // Called once the command ends or is interrupted.
