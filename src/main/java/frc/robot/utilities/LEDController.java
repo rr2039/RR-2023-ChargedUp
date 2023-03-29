@@ -6,8 +6,10 @@ package frc.robot.utilities;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,11 +23,16 @@ public class LEDController extends SubsystemBase {
   // Cube Color.kPurple
   Color gamePiece = Color.kPurple;
 
+  AnalogInput soundSensor = new AnalogInput(0);
+
   /** Creates a new LEDController. */
   public LEDController() {
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
     m_led.start();
+
+    //soundSensor.setOversampleBits(4);
+    //soundSensor.setAverageBits(4);
   }
 
   public void setGamePiece(int piece) {
@@ -90,5 +97,6 @@ public class LEDController extends SubsystemBase {
     setGamePieceAndAlliance();
     // Set the LEDs
     m_led.setData(m_ledBuffer);
+    SmartDashboard.putNumber("SoundLevel", soundSensor.getValue());
   }
 }
