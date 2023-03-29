@@ -21,7 +21,7 @@ public class GodCommand extends CommandBase {
   GenericHID operatorContoller;
 
   SlewRateLimiter boySlew = new SlewRateLimiter(9);
-  SlewRateLimiter girlSlew = new SlewRateLimiter(9);
+  SlewRateLimiter girlSlew = new SlewRateLimiter(8);
   SlewRateLimiter wristSlew = new SlewRateLimiter(180);
   SlewRateLimiter shoulderSlew = new SlewRateLimiter(270);
   

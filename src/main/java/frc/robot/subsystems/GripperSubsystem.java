@@ -19,6 +19,7 @@ public class GripperSubsystem extends SubsystemBase {
   public GripperSubsystem() {
     primaryPistons = m_pH.makeSolenoid(1);
     secondaryPistons = m_pH.makeSolenoid(0);
+    m_pH.enableCompressorAnalog(70, 115);
   }
 
   public void toggleClaw() {
