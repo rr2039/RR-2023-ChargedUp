@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ChangeScoreMode;
 import frc.robot.commands.ToggleClaw;
+import frc.robot.commands.PresetPositions.FloorPickup;
 import frc.robot.commands.PresetPositions.HighScore;
 import frc.robot.commands.PresetPositions.LowScore;
 import frc.robot.commands.PresetPositions.MediumScore;
@@ -33,12 +34,16 @@ import frc.robot.utilities.LEDController;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeTop extends SequentialCommandGroup {
-  /** Creates a new CubeTop. */
-  public CubeTop(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw, LEDController m_led, int level) {
+public class CubeConeBottom extends SequentialCommandGroup {
+  /** Creates a new CubeConeBottom. */
+  public CubeConeBottom(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw, LEDController m_led, int level) {
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("CubeTop", new PathConstraints(3, 2));
+    PathPlannerTrajectory path = PathPlanner.loadPath("CubeConeBottom", new PathConstraints(3, 2));
     HashMap<String, Command> eventMap = new HashMap<>();
+
+    eventMap.put("floorpickup", new ChangeScoreMode(m_shoulder, m_led, 0).andThen(new FloorPickup(m_shoulder, m_gripper, m_arm, m_claw)));
+    eventMap.put("grabpiece", new ToggleClaw(m_claw));
+    eventMap.put("transport", new TransportPosition(m_shoulder, m_gripper, m_arm));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       m_robotDrive::getPose, // Pose2d supplier

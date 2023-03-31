@@ -17,20 +17,25 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.ChangeScoreMode;
+import frc.robot.commands.ToggleClaw;
+import frc.robot.commands.PresetPositions.HighScore;
 import frc.robot.commands.PresetPositions.LowScore;
+import frc.robot.commands.PresetPositions.MediumScore;
 import frc.robot.commands.PresetPositions.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.utilities.LEDController;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CubeBottom extends SequentialCommandGroup {
-  /** Creates a new CubeBottom. */
-  public CubeBottom(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw) {
+  /** Creates a new CubeMidBottom. */
+  public CubeBottom(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw, LEDController m_led, int level) {
 
     PathPlannerTrajectory path = PathPlanner.loadPath("CubeBottom", new PathConstraints(3, 2));
     HashMap<String, Command> eventMap = new HashMap<>();
@@ -49,17 +54,34 @@ public class CubeBottom extends SequentialCommandGroup {
 
     Command poseReset = autoBuilder.resetPose(path);
 
+    Command scoreLevel;
+    switch(level) {
+      case 0:
+        scoreLevel = new LowScore(m_shoulder, m_gripper, m_arm);
+        break;
+      case 1:
+        scoreLevel = new MediumScore(m_shoulder, m_gripper, m_arm);
+        break;
+      case 2:
+        scoreLevel = new HighScore(m_shoulder, m_gripper, m_arm);
+        break;
+      default:
+        scoreLevel = new MediumScore(m_shoulder, m_gripper, m_arm);
+        break;
+    }
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(poseReset,
                 //new GodCommand(m_shoulder, m_gripper, m_arm),
-                new LowScore(m_shoulder, m_gripper, m_arm),
-                new WaitCommand(2),
-                new RunCommand(() -> m_claw.open(), m_claw).withTimeout(0.1),
+                new ChangeScoreMode(m_shoulder, m_led, 1),
+                scoreLevel,
+                new WaitCommand(3),
+                new ToggleClaw(m_claw),
                 new WaitCommand(0.5),
                 new TransportPosition(m_shoulder, m_gripper, m_arm),
                 new WaitCommand(0.5),
-                new RunCommand(() -> m_claw.softClose(), m_claw).withTimeout(0.1),
-                autoBuilder.followPath(path));
+                autoBuilder.followPath(path),
+                new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }
 }

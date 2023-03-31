@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ChangeScoreMode;
+import frc.robot.commands.ToggleClaw;
+import frc.robot.commands.PresetPositions.FloorPickup;
 import frc.robot.commands.PresetPositions.HighScore;
 import frc.robot.commands.PresetPositions.LowScore;
 import frc.robot.commands.PresetPositions.MediumScore;
@@ -32,12 +34,16 @@ import frc.robot.utilities.LEDController;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubePlaceBottom extends SequentialCommandGroup {
-  /** Creates a new CubeMidBottom. */
-  public CubePlaceBottom(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw, LEDController m_led, int level) {
+public class CubeConeTop extends SequentialCommandGroup {
+  /** Creates a new CubeConeTop. */
+  public CubeConeTop(DriveSubsystem m_robotDrive, ShoulderSubsystem m_shoulder, GripperPitchSubsystem m_gripper, ArmExtensionSubsystem m_arm, GripperSubsystem m_claw, LEDController m_led, int level) {
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("CubeBottom", new PathConstraints(3, 2));
+    PathPlannerTrajectory path = PathPlanner.loadPath("CubeConeTop", new PathConstraints(3, 2));
     HashMap<String, Command> eventMap = new HashMap<>();
+
+    eventMap.put("floorpickup", new ChangeScoreMode(m_shoulder, m_led, 0).andThen(new FloorPickup(m_shoulder, m_gripper, m_arm, m_claw)));
+    eventMap.put("grabpiece", new ToggleClaw(m_claw));
+    eventMap.put("transport", new TransportPosition(m_shoulder, m_gripper, m_arm));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       m_robotDrive::getPose, // Pose2d supplier
@@ -75,12 +81,11 @@ public class CubePlaceBottom extends SequentialCommandGroup {
                 //new GodCommand(m_shoulder, m_gripper, m_arm),
                 new ChangeScoreMode(m_shoulder, m_led, 1),
                 scoreLevel,
-                new WaitCommand(5),
-                new RunCommand(() -> m_claw.open(), m_claw).withTimeout(0.1),
+                new WaitCommand(3),
+                new ToggleClaw(m_claw),
                 new WaitCommand(0.5),
                 new TransportPosition(m_shoulder, m_gripper, m_arm),
                 new WaitCommand(0.5),
-                new RunCommand(() -> m_claw.softClose(), m_claw).withTimeout(0.1),
                 autoBuilder.followPath(path),
                 new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }

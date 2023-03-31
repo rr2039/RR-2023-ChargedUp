@@ -45,8 +45,8 @@ public class LimelightInterface extends SubsystemBase {
     Alliance alliance = DriverStation.getAlliance();
 
     hasTarget1 = LimelightHelpers.getTV(limelight1);
+    tag1 = LimelightHelpers.getFiducialID(limelight1);
     if (hasTarget1) {
-      tag1 = LimelightHelpers.getFiducialID(limelight1);
       aprilTagPosRelRobot = LimelightHelpers.toPose2DFixLimelightsGlaringMistake(LimelightHelpers.getTargetPose_RobotSpace(limelight1));
       //aprilTagField.setRobotPose(aprilTagPosRelRobot);
       Pose2d botpose;
@@ -68,8 +68,8 @@ public class LimelightInterface extends SubsystemBase {
       }
     }
     hasTarget2 = LimelightHelpers.getTV(limelight2);
+    tag2 = LimelightHelpers.getFiducialID(limelight2);
     if (hasTarget2) {
-      tag2 = LimelightHelpers.getFiducialID(limelight2);
       aprilTagPosRelRobot = LimelightHelpers.toPose2DFixLimelightsGlaringMistake(LimelightHelpers.getTargetPose_RobotSpace(limelight1));
       Pose2d botpose;
       if (alliance == Alliance.Blue) {

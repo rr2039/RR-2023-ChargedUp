@@ -16,6 +16,7 @@ public class AutoBalance extends CommandBase {
   double fallAngle = 12.0;
   double targetAngle = 5.0;
   double time = 0;
+  double timeAboveFall = 0;
   boolean direction = false;
   /** Creates a new AutoBalance. */
   public AutoBalance(DriveSubsystem m_drive) {
@@ -35,6 +36,7 @@ public class AutoBalance extends CommandBase {
     climbing = false;
     time = 0;
     fell = false;
+    timeAboveFall = 0;
     //fallAngle = 13.0;
   }
 
@@ -62,31 +64,30 @@ public class AutoBalance extends CommandBase {
     }*/
 
     // Initialize climb
-    if ((-fallAngle < drive.getPitch() || drive.getPitch() < fallAngle) && !climbing) {
+    boolean aboveFall = (drive.getPitch() < - fallAngle && drive.getPitch() < 0) || (fallAngle < drive.getPitch() && drive.getPitch() > 0);
+    boolean belowFall = (-fallAngle < drive.getPitch() && drive.getPitch() < 0) || (drive.getPitch() < fallAngle && drive.getPitch() > 0);
+    boolean belowTarget = (-targetAngle < drive.getPitch() && drive.getPitch() < 0) || (drive.getPitch() < targetAngle && drive.getPitch() > 0); 
+    if (belowFall && !climbing) {
       drive.drive((direction ? 0.2 : -0.2), 0, 0, false);
     }
-    // Start climbing
-    if ((drive.getPitch() < - fallAngle || fallAngle < drive.getPitch()) && !climbing && time > 3) {
-      climbing = true;
+    if (aboveFall && !climbing) {
+      if (timeAboveFall > 0.5) {
+        climbing = true;
+      } else {
+        timeAboveFall += 0.02;
+      }
     }
-    if ((drive.getPitch() < - fallAngle || fallAngle < drive.getPitch()) && climbing) {
-      drive.drive((direction ? 0.2 : -0.2), 0, 0, false);
+    if (aboveFall && climbing) {
+      drive.drive((drive.getPitch() > 0 ? 0.2 : -0.2), 0, 0, false);
     }
-    // Taper climbing +
-    if ((-fallAngle < drive.getPitch() || drive.getPitch() < fallAngle) && climbing) {
+    if (belowFall && !belowTarget && climbing) {
       //double speed = 0.2 - (drive.getPitch() - fallAngle)/(targetAngle - fallAngle);
       double speed = drive.getPitch()/75;
       drive.drive(speed, 0, 0, false);
     }
-    if ((-targetAngle < drive.getPitch() || drive.getPitch() < targetAngle) && climbing) {
+    if (belowFall && belowTarget && climbing) {
       drive.drive(0, 0, 0, false);
       drive.setX();
-    }
-    // stationary
-    // taper climbing - 
-    // full speed backwards
-    if (time < 3) {
-      time += 0.02;
     }
   }
 
