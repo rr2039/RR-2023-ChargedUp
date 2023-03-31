@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -72,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    m_gyro.setAngleAdjustment(90);
+    m_gyro.setAngleAdjustment(0);
   }
 
   @Override
@@ -210,7 +211,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void zeroHeading() {
     //m_gyro.reset();
     m_gyro.reset();
-    //m_gyro.setAngleAdjustment(0);
+    m_gyro.setAngleAdjustment(180);
   }
 
   /**
@@ -222,7 +223,8 @@ public class DriveSubsystem extends SubsystemBase {
     //double temp = (m_gyro.getAngle()+360)%360;
     //double temp = m_gyro.getAngle();
     //return temp * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-    return m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return (m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)) + -90;
+    //return Math.toDegrees(MathUtil.angleModulus(Math.toRadians(m_gyro.getAngle()))) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   public double getPitch() {

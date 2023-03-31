@@ -20,7 +20,7 @@ import frc.robot.Constants.OIConstants;
 
 // Autos
 import frc.robot.autonomous.CubeBottom;
-import frc.robot.autonomous.CubeMidBottom;
+import frc.robot.autonomous.CubePlaceBottom;
 import frc.robot.autonomous.CubeTop;
 import frc.robot.autonomous.NoMove;
 import frc.robot.autonomous.OnlyAuto;
@@ -110,9 +110,13 @@ public class RobotContainer {
     auto_chooser.setDefaultOption("OnlyAuto", new OnlyAuto(m_robotDrive));
     auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
     auto_chooser.addOption("OnlyAutoBottom", new OnlyAutoBottom(m_robotDrive));
-    auto_chooser.addOption("CubeTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    auto_chooser.addOption("CubeLowTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeMidTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeHighTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
     auto_chooser.addOption("CubeBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
-    auto_chooser.addOption("CubeMidBottom", new CubeMidBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    auto_chooser.addOption("CubeLowBottom", new CubePlaceBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeMidBottom", new CubePlaceBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeHighBottom", new CubePlaceBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
     SmartDashboard.putData("Auto Chooser", auto_chooser);
   }
 
@@ -167,7 +171,7 @@ public class RobotContainer {
     DpadDown.onTrue(new FloorPickup(m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
     // Human Pickup
     Trigger DpadUp = new POVButton(m_operatorController, 0);
-    DpadUp.onTrue(new HumanPlayer(m_shoulder, m_gripperPitch, m_armExtension));
+    DpadUp.onTrue(new HumanPlayer(m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
     
     // Move Wrist Roll
     Trigger DpadRight = new POVButton(m_operatorController, 90);

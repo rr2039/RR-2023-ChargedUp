@@ -80,7 +80,7 @@ public final class Constants {
     public static final double kShoulderStartPoint = 0;
     public static final double kExtendyBoyStartPoint = -1;
     public static final double kExtendyGirlStartPoint = -1;
-    public static final double kWristStartPoint = -16;
+    public static final double kWristStartPoint = -36;
   }
 
   public static final class DriveConstants {

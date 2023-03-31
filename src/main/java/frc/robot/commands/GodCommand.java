@@ -22,7 +22,7 @@ public class GodCommand extends CommandBase {
 
   SlewRateLimiter boySlew = new SlewRateLimiter(9);
   SlewRateLimiter girlSlew = new SlewRateLimiter(8);
-  SlewRateLimiter wristSlew = new SlewRateLimiter(180);
+  SlewRateLimiter wristSlew = new SlewRateLimiter(150);
   SlewRateLimiter shoulderSlew = new SlewRateLimiter(270);
   
   /** Creates a new GodCommand. */
