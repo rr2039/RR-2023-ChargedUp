@@ -4,26 +4,57 @@
 
 package frc.robot;
 
+// Stuff
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+// Constants
 import frc.robot.Constants.OIConstants;
+
+// Autos
+import frc.robot.autonomous.CubeBottom;
+import frc.robot.autonomous.CubeConeBottom;
+import frc.robot.autonomous.CubeConeTop;
+import frc.robot.autonomous.CubeTop;
+import frc.robot.autonomous.NoMove;
+
+// Preset Positions
+import frc.robot.commands.PresetPositions.FloorPickup;
+import frc.robot.commands.PresetPositions.HighScore;
+import frc.robot.commands.PresetPositions.HumanPlayer;
+import frc.robot.commands.PresetPositions.LowScore;
+import frc.robot.commands.PresetPositions.MediumScore;
+//import frc.robot.commands.PresetPositions.TestPos;
+import frc.robot.commands.PresetPositions.TransportPosition;
+
+// Subsystems
+import frc.robot.subsystems.ArmExtensionSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.GripperPitchSubsystem;
+import frc.robot.subsystems.GripperRollSubsystem;
+import frc.robot.subsystems.GripperSubsystem;
+
+// Utilities
+import frc.robot.utilities.LEDController;
+import frc.robot.utilities.LimelightInterface;
+
+// Commands
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import java.util.List;
+import frc.robot.commands.AutoBalance;
+//import frc.robot.commands.AlignToAprilTag;
+import frc.robot.commands.ChangeScoreMode;
+import frc.robot.commands.GodCommand;
+import frc.robot.commands.GripperRoll;
+import frc.robot.commands.ToggleClaw;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -34,10 +65,21 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
-  // The driver's controller
+  private final LimelightInterface m_limelight = new LimelightInterface(m_robotDrive);
+  private final GripperSubsystem m_gripper = new GripperSubsystem();
+  private final ShoulderSubsystem m_shoulder = new ShoulderSubsystem();
+  private final GripperPitchSubsystem m_gripperPitch = new GripperPitchSubsystem();
+  private final GripperRollSubsystem m_gripperRoll = new GripperRollSubsystem();
+  private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
+  private final LEDController m_led = new LEDController();
+  
+  // The controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 
+  // Auto Chooser for Dashboard
+  SendableChooser<Command> auto_chooser = new SendableChooser<>();
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -51,11 +93,33 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.06),
-                MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.06),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.06),
+                MathUtil.applyDeadband(m_driverController.getRawAxis(0), 0.06),
+                MathUtil.applyDeadband(-m_driverController.getRawAxis(1), 0.06),
+                MathUtil.applyDeadband(-m_driverController.getRawAxis(4), 0.06),
                 true),
-            m_robotDrive));
+            m_robotDrive)
+    );
+    // God command to run PID 24/7
+    m_shoulder.setDefaultCommand(new GodCommand(m_shoulder, m_gripperPitch, m_armExtension, m_operatorController));
+    //m_gripperPitch.setDefaultCommand(
+    //  new RunCommand(() -> m_gripperPitch.moveWristPitch(m_operatorController.getRawAxis(3) * -0.25), m_gripperPitch).andThen(() -> m_gripperPitch.moveWristPitch(0.0))
+    //);
+
+    // Auto Options
+    auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
+    auto_chooser.addOption("CubeLowTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeMidTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeHighTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    auto_chooser.addOption("CubeLowBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeMidBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeHighBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    auto_chooser.addOption("CubeConeLowBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeConeMidBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeConeHighBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    auto_chooser.addOption("CubeConeLowTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    auto_chooser.addOption("CubeConeMidTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    auto_chooser.addOption("CubeConeHighTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    SmartDashboard.putData("Auto Chooser", auto_chooser);
   }
 
   /**
@@ -68,10 +132,63 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
+    new JoystickButton(m_driverController, Button.kA.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+    //new JoystickButton(m_driverController, Button.kY.value)
+    //    .onTrue(new AlignToAprilTag(m_robotDrive, m_limelight).andThen(new AlignToAprilTag(m_robotDrive, m_limelight)));
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        .onTrue(new ChangeScoreMode(m_shoulder, m_led, 1));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+        .onTrue(new ChangeScoreMode(m_shoulder, m_led, 0));
+    new JoystickButton(m_driverController, Button.kB.value)
+        .whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading()));
+    new JoystickButton(m_driverController, Button.kY.value)
+        .onTrue(new AutoBalance(m_robotDrive));
+
+
+    // OPERATOR
+    new JoystickButton(m_operatorController, 8)
+        .onTrue(new ToggleClaw(m_gripper));
+
+    // OPERATOR SET POSITIONS
+    // Test Pos
+    //new JoystickButton(m_operatorController, 7)
+    //    .onTrue(new TestPos(m_shoulder, m_gripperPitch, m_armExtension));
+    // Transport Pos
+    new JoystickButton(m_operatorController, 1)
+        .onTrue(new TransportPosition(m_shoulder, m_gripperPitch, m_armExtension));
+    // High Pos
+    new JoystickButton(m_operatorController, 4)
+        .onTrue(new HighScore(m_shoulder, m_gripperPitch, m_armExtension));
+    // Med Pos
+    new JoystickButton(m_operatorController, 3)
+        .onTrue(new MediumScore(m_shoulder, m_gripperPitch, m_armExtension));
+    // Low Pose
+    new JoystickButton(m_operatorController, 2)
+        .onTrue(new LowScore(m_shoulder, m_gripperPitch, m_armExtension));
+    // Floor Pickup
+    Trigger DpadDown = new POVButton(m_operatorController, 180);
+    DpadDown.onTrue(new FloorPickup(m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    // Human Pickup
+    Trigger DpadUp = new POVButton(m_operatorController, 0);
+    DpadUp.onTrue(new HumanPlayer(m_shoulder, m_gripperPitch, m_armExtension, m_gripper));
+    
+    // Move Wrist Roll
+    Trigger DpadRight = new POVButton(m_operatorController, 90);
+    DpadRight.onTrue(new GripperRoll(m_gripperRoll, 0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
+    Trigger DpadLeft = new POVButton(m_operatorController, 270);
+    DpadLeft.onTrue(new GripperRoll(m_gripperRoll, -0.1)).onFalse(new GripperRoll(m_gripperRoll, 0));
+    
+    /*Trigger DpadUp = new POVButton(m_operatorController, 0);
+    DpadUp.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(-0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));
+    Trigger DpadDown = new POVButton(m_operatorController, 180);
+    DpadDown.onTrue(new RunCommand(() -> m_armExtension.moveExtendyGirls(0.25), m_armExtension)).onFalse(new RunCommand(() -> m_armExtension.moveExtendyGirls(0), m_armExtension));
+    Trigger LeftBumper = new JoystickButton(m_operatorController, 5);
+    LeftBumper.onTrue(new ArmExtension(m_armExtension, -0.25)).onFalse(new ArmExtension(m_armExtension, 0));
+    Trigger RightBumper = new JoystickButton(m_operatorController, 6);
+    RightBumper.onTrue(new ArmExtension(m_armExtension, 0.25)).onFalse(new ArmExtension(m_armExtension, 0));*/
   }
 
   /**
@@ -80,43 +197,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
-
-    // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        config);
-
-    var thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
-        m_robotDrive::getPose, // Functional interface to feed supplier
-        DriveConstants.kDriveKinematics,
-
-        // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController,
-        m_robotDrive::setModuleStates,
-        m_robotDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return auto_chooser.getSelected();
   }
 }
