@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.GripperPitchSubsystem;
 
-public class GripperPitch extends CommandBase {
+public class GripperPitch extends Command {
   GripperPitchSubsystem wrist = null;
   double speed = 0;
   /** Creates a new GripperPitch. */

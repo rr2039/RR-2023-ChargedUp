@@ -13,7 +13,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
@@ -22,7 +22,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utilities.LimelightHelpers;
 import frc.robot.utilities.LimelightInterface;
 
-public class AlignToAprilTag extends CommandBase {
+public class AlignToAprilTag extends Command {
   // Create config for trajectory
   TrajectoryConfig config = new TrajectoryConfig(
     AutoConstants.kMaxSpeedMetersPerSecond,

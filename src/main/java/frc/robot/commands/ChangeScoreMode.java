@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.utilities.LEDController;
 
-public class ChangeScoreMode extends CommandBase {
+public class ChangeScoreMode extends Command {
 
   ShoulderSubsystem shoulder;
   LEDController led;

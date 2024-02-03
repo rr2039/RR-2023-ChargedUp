@@ -6,14 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.PresetPositions.TransportPosition;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 
-public class GodCommand extends CommandBase {
+public class GodCommand extends Command {
 
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;

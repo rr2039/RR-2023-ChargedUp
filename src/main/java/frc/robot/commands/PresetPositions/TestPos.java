@@ -4,12 +4,12 @@
 
 package frc.robot.commands.PresetPositions;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.GripperPitchSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 
-public class TestPos extends CommandBase {
+public class TestPos extends Command {
 
   ShoulderSubsystem shoulder;
   GripperPitchSubsystem gripper;
