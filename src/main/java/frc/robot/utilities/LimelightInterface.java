@@ -42,7 +42,7 @@ public class LimelightInterface extends SubsystemBase {
   public void periodic() {
     //[0.029571,-0.080881,0.644705,-16.887242,-1.438812,1.242106]
 
-    Alliance alliance = DriverStation.getAlliance();
+    Alliance alliance = DriverStation.getAlliance().get();
 
     hasTarget1 = LimelightHelpers.getTV(limelight1);
     tag1 = LimelightHelpers.getFiducialID(limelight1);

@@ -6,11 +6,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.networktables.GenericEntry;
@@ -24,7 +24,7 @@ public class GripperPitchSubsystem extends SubsystemBase {
 
   RelativeEncoder wristPitchEnc;
 
-  SparkMaxPIDController wristPitchPID;
+  SparkPIDController wristPitchPID;
 
   double wristCurSetpoint = ArmConstants.kWristStartPoint;
 
