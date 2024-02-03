@@ -51,7 +51,7 @@ public class LEDController extends SubsystemBase {
   }
 
   private void setGamePieceAndAlliance() {
-    Color allianceColor = DriverStation.getAlliance() == Alliance.Blue ? Color.kBlue : Color.kRed;
+    Color allianceColor = DriverStation.getAlliance().get() == Alliance.Blue ? Color.kBlue : Color.kRed;
     for (int i = 0; i < half_leds/2 - 11; i++) {
       m_ledBuffer.setLED(i, allianceColor); 
     }

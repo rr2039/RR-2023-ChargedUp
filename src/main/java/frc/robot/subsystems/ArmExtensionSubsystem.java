@@ -6,10 +6,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.networktables.GenericEntry;
@@ -27,8 +27,8 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   RelativeEncoder extendyGirlEnc;
   RelativeEncoder extendyBoyEnc;
 
-  SparkMaxPIDController extendyGirlPID;
-  SparkMaxPIDController extendyBoyPID;
+  SparkPIDController extendyGirlPID;
+  SparkPIDController extendyBoyPID;
 
   double extendyGirlCurSetpoint = ArmConstants.kExtendyGirlStartPoint;
   double extendyBoyCurSetpoint = ArmConstants.kExtendyBoyStartPoint;
