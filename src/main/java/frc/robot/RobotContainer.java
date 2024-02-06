@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 
 // Autos
-import frc.robot.autonomous.CubeBottom;
-import frc.robot.autonomous.CubeConeBottom;
-import frc.robot.autonomous.CubeConeTop;
-import frc.robot.autonomous.CubeTop;
-import frc.robot.autonomous.NoMove;
+//import frc.robot.autonomous.CubeBottom;
+//import frc.robot.autonomous.CubeConeBottom;
+//import frc.robot.autonomous.CubeConeTop;
+//import frc.robot.autonomous.CubeTop;
+//import frc.robot.autonomous.NoMove;
 
 // Preset Positions
 import frc.robot.commands.PresetPositions.FloorPickup;
@@ -106,19 +106,19 @@ public class RobotContainer {
     //);
 
     // Auto Options
-    auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
-    auto_chooser.addOption("CubeLowTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
-    auto_chooser.addOption("CubeMidTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
-    auto_chooser.addOption("CubeHighTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
-    auto_chooser.addOption("CubeLowBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
-    auto_chooser.addOption("CubeMidBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
-    auto_chooser.addOption("CubeHighBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
-    auto_chooser.addOption("CubeConeLowBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
-    auto_chooser.addOption("CubeConeMidBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
-    auto_chooser.addOption("CubeConeHighBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
-    auto_chooser.addOption("CubeConeLowTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
-    auto_chooser.addOption("CubeConeMidTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
-    auto_chooser.addOption("CubeConeHighTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    //auto_chooser.addOption("NoMove", new NoMove(m_robotDrive));
+    //auto_chooser.addOption("CubeLowTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    //auto_chooser.addOption("CubeMidTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    //auto_chooser.addOption("CubeHighTop", new CubeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    //auto_chooser.addOption("CubeLowBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    //auto_chooser.addOption("CubeMidBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    //auto_chooser.addOption("CubeHighBottom", new CubeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    //auto_chooser.addOption("CubeConeLowBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    //auto_chooser.addOption("CubeConeMidBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    //auto_chooser.addOption("CubeConeHighBottom", new CubeConeBottom(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
+    //auto_chooser.addOption("CubeConeLowTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 0));
+    //auto_chooser.addOption("CubeConeMidTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 1));
+    //auto_chooser.addOption("CubeConeHighTop", new CubeConeTop(m_robotDrive, m_shoulder, m_gripperPitch, m_armExtension, m_gripper, m_led, 2));
     SmartDashboard.putData("Auto Chooser", auto_chooser);
   }
 
